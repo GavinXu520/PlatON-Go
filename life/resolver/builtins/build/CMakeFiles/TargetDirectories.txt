@@ -1,0 +1,7 @@
+/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build/CMakeFiles/rebuild_cache.dir
+/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build/CMakeFiles/install.dir
+/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build/CMakeFiles/list_install_components.dir
+/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build/CMakeFiles/builtins.dir
+/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build/CMakeFiles/install/local.dir
+/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build/CMakeFiles/install/strip.dir
+/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build/CMakeFiles/edit_cache.dir

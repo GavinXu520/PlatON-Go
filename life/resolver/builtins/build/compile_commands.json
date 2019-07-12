@@ -1,0 +1,72 @@
+[
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/ashriti3.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/ashriti3.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/ashriti3.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/fixtfti.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixtfti.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixtfti.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/fixunstfti.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixunstfti.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixunstfti.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/fixsfti.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixsfti.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixsfti.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/fixdfti.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixdfti.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixdfti.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/fixunssfti.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixunssfti.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixunssfti.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/fixunsdfti.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixunsdfti.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/fixunsdfti.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/floattidf.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/floattidf.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/floattidf.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/floatuntidf.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/floatuntidf.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/floatuntidf.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/divti3.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/divti3.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/divti3.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/udivti3.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/udivti3.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/udivti3.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/modti3.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/modti3.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/modti3.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/umodti3.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/umodti3.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/umodti3.c"
+},
+{
+  "directory": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/build",
+  "command": "/usr/bin/cc   -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins -I/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/../softfloat/source/include   -Wall     -o CMakeFiles/builtins.dir/multi3.o   -c /home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/multi3.c",
+  "file": "/home/gavin/go-workspace/src/github.com/PlatONnetwork/PlatON-Go/life/resolver/builtins/multi3.c"
+}
+]
