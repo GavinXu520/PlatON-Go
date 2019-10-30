@@ -18,18 +18,13 @@ package rlp
 
 import (
 	"bytes"
-	"encoding/binary"
-	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"math/big"
-	"reflect"
 	"sync"
 	"testing"
-
-	"github.com/PlatONnetwork/PlatON-Go/common/hexutil"
 )
 
 type testEncoder struct {
@@ -38,8 +33,9 @@ type testEncoder struct {
 
 func (e *testEncoder) EncodeRLP(w io.Writer) error {
 	if e == nil {
-		w.Write([]byte{0, 0, 0, 0})
-	} else if e.err != nil {
+		panic("EncodeRLP called on nil value")
+	}
+	if e.err != nil {
 		return e.err
 	} else {
 		w.Write([]byte{0, 1, 0, 1, 0, 1, 0, 1, 0, 1})
@@ -47,10 +43,24 @@ func (e *testEncoder) EncodeRLP(w io.Writer) error {
 	return nil
 }
 
+type testEncoderValueMethod struct{}
+
+func (e testEncoderValueMethod) EncodeRLP(w io.Writer) error {
+	w.Write([]byte{0xFA, 0xFE, 0xF0})
+	return nil
+}
+
 type byteEncoder byte
 
 func (e byteEncoder) EncodeRLP(w io.Writer) error {
 	w.Write(EmptyList)
+	return nil
+}
+
+type undecodableEncoder func()
+
+func (f undecodableEncoder) EncodeRLP(w io.Writer) error {
+	w.Write([]byte{0xF5, 0xF5, 0xF5})
 	return nil
 }
 
@@ -224,6 +234,7 @@ var encTests = []encTest{
 	{val: &tailRaw{A: 1, Tail: []RawValue{}}, output: "C101"},
 	{val: &tailRaw{A: 1, Tail: nil}, output: "C101"},
 	{val: &hasIgnoredField{A: 1, B: 2, C: 3}, output: "C20103"},
+	{val: &intField{X: 3}, error: "rlp: type int is not RLP-serializable (struct field rlp.intField.X)"},
 
 	// nil
 	{val: (*uint)(nil), output: "80"},
@@ -237,20 +248,66 @@ var encTests = []encTest{
 	{val: (*[]struct{ uint })(nil), output: "C0"},
 	{val: (*interface{})(nil), output: "C0"},
 
+	// nil struct fields
+	{
+		val: struct {
+			X *[]byte
+		}{},
+		output: "C180",
+	},
+	{
+		val: struct {
+			X *[2]byte
+		}{},
+		output: "C180",
+	},
+	{
+		val: struct {
+			X *uint64
+		}{},
+		output: "C180",
+	},
+	{
+		val: struct {
+			X *uint64 `rlp:"nilList"`
+		}{},
+		output: "C1C0",
+	},
+	{
+		val: struct {
+			X *[]uint64
+		}{},
+		output: "C1C0",
+	},
+	{
+		val: struct {
+			X *[]uint64 `rlp:"nilString"`
+		}{},
+		output: "C180",
+	},
+
 	// interfaces
 	{val: []io.Reader{reader}, output: "C3C20102"}, // the contained value is a struct
 
 	// Encoder
-	{val: (*testEncoder)(nil), output: "00000000"},
+	{val: (*testEncoder)(nil), output: "C0"},
 	{val: &testEncoder{}, output: "00010001000100010001"},
 	{val: &testEncoder{errors.New("test error")}, error: "test error"},
-	// verify that pointer method testEncoder.EncodeRLP is called for
+	{val: struct{ E testEncoderValueMethod }{}, output: "C3FAFEF0"},
+	{val: struct{ E *testEncoderValueMethod }{}, output: "C1C0"},
+
+	// Verify that the Encoder interface works for unsupported types like func().
+	{val: undecodableEncoder(func() {}), output: "F5F5F5"},
+
+	// Verify that pointer method testEncoder.EncodeRLP is called for
 	// addressable non-pointer values.
 	{val: &struct{ TE testEncoder }{testEncoder{}}, output: "CA00010001000100010001"},
 	{val: &struct{ TE testEncoder }{testEncoder{errors.New("test error")}}, error: "test error"},
-	// verify the error for non-addressable non-pointer Encoder
-	{val: testEncoder{}, error: "rlp: game over: unadressable value of type rlp.testEncoder, EncodeRLP is pointer method"},
-	// verify the special case for []byte
+
+	// Verify the error for non-addressable non-pointer Encoder.
+	{val: testEncoder{}, error: "rlp: unadressable value of type rlp.testEncoder, EncodeRLP is pointer method"},
+
+	// Verify Encoder takes precedence over []byte.
 	{val: []byteEncoder{0, 1, 2, 3, 4}, output: "C5C0C0C0C0C0"},
 }
 
@@ -272,116 +329,6 @@ func runEncTests(t *testing.T, f func(val interface{}) ([]byte, error)) {
 				i, output, test.output, test.val, test.val)
 		}
 	}
-}
-
-func uint64ToBytes(val uint64) []byte {
-	buf := make([]byte, 8)
-	binary.BigEndian.PutUint64(buf, val)
-	return buf[:]
-}
-
-func boolToBytes(val bool) []byte {
-	buf := bytes.NewBuffer([]byte{})
-	binary.Write(buf, binary.BigEndian, true)
-	return buf.Bytes()
-}
-
-func TestDecodeEncode(t *testing.T) {
-	///////////////////////////////////////////////////////////////////////////////
-	nodeId, _ := hex.DecodeString("e152be5f5f0167250592a12a197ab19b215c5295d5eb0bb1133673dc8607530db1bfa5415b2ec5e94113f2fce0c4a60e697d5d703a29609b197b836b020446c7")
-	owner, _ := hex.DecodeString("4FED1fC4144c223aE3C1553be203cDFcbD38C581")
-
-	var source [][]byte
-	source = make([][]byte, 0)
-	source = append(source, uint64ToBytes(0xf1))
-	source = append(source, []byte("CandidateDeposit"))
-	source = append(source, nodeId)
-	source = append(source, owner)
-	source = append(source, uint64ToBytes(500)) //10000
-	source = append(source, []byte("127.0.0.1"))
-	source = append(source, []byte("7890"))
-	source = append(source, []byte("extra data"))
-
-	// rlp Encode
-	buffer := new(bytes.Buffer)
-	err := Encode(buffer, source)
-	if err != nil {
-		fmt.Println(err)
-		t.Errorf("fail")
-	} else {
-		fmt.Println("encode_hex_string: ", hexutil.Encode(buffer.Bytes()))
-		fmt.Println("encode_bytes: ", buffer.Bytes())
-	}
-
-	// rlp Decode
-	ptr := new(interface{})
-	if err := Decode(bytes.NewReader(buffer.Bytes()), &ptr); err != nil {
-		fmt.Println(err)
-		t.Errorf("fail")
-	} else {
-		deref := reflect.ValueOf(ptr).Elem().Interface()
-		for i, v := range deref.([]interface{}) {
-			fmt.Println(i, ": ", hex.EncodeToString(v.([]byte)))
-		}
-	}
-}
-
-func TestEncodeF03(t *testing.T) {
-
-	str := "e4babae6898de698afe4bda0e59097"
-	res, _ := hexutil.Decode(str)
-
-	fmt.Println(string(res))
-
-	//val :=  []interface{}{"transfer", uint(0xFFFFFF), []interface{}{[]uint{4, 5, 5}}, "abc"}
-	fmt.Println([]byte("Are you?"))
-	var source [][]byte
-	source = make([][]byte, 0)
-	source = append(source, []byte("Are you?"))
-	source = append(source, uint64ToBytes(1000))
-	source = append(source, uint64ToBytes(2000))
-	source = append(source, boolToBytes(false))
-	source = append(source, []byte("hello world"))
-
-	buffer := new(bytes.Buffer)
-	err := Encode(buffer, source)
-	if err != nil {
-		fmt.Println(err)
-		t.Errorf("fail")
-	}
-	// the array after decode
-	encodedBytes := buffer.Bytes()
-	fmt.Println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-	fmt.Println("encode_string: ", hexutil.Encode(buffer.Bytes()))
-	fmt.Println(encodedBytes)
-
-	ptr := new(interface{})
-	Decode(bytes.NewReader(encodedBytes), &ptr)
-	deref := reflect.ValueOf(ptr).Elem().Interface()
-	fmt.Println(deref)
-
-	for i, v := range deref.([]interface{}) {
-		// fmt.Println(i,"    ",hex.EncodeToString(v.([]byte)))
-		// The type check, then convert
-		switch i {
-		case 0:
-			fmt.Println(string(v.([]byte)))
-		case 1:
-			fmt.Println(binary.BigEndian.Uint64(v.([]byte)))
-		case 2:
-			fmt.Println(binary.BigEndian.Uint64(v.([]byte)))
-		case 3:
-			byt := v.([]byte)[0]
-			if byt == 1 {
-				fmt.Println("false")
-			} else {
-				fmt.Println("true")
-			}
-		case 4:
-			fmt.Println(string(v.([]byte)))
-		}
-	}
-
 }
 
 func TestEncode(t *testing.T) {
