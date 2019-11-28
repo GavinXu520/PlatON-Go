@@ -1,5 +1,8 @@
 package compiler
 
+/**
+gas规则器，用于对指令插入gas
+ */
 type GasPolicy interface {
 	GetCost(key string) int64
 }

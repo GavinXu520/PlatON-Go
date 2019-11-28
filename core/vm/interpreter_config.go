@@ -15,4 +15,6 @@ type Config struct {
 	JumpTable [256]operation
 
 	ConsoleOutput bool
+
+	// todo 这里添加一个 WASM 的具体实现类型吧
 }

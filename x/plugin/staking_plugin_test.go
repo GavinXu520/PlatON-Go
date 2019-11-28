@@ -54,6 +54,7 @@ test tool
 */
 func Test_CleanSnapshotDB(t *testing.T) {
 	sndb := snapshotdb.Instance()
+
 	sndb.Clear()
 }
 

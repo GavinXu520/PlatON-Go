@@ -56,6 +56,7 @@ func NewEVMContext(msg Message, header *types.Header, chain ChainContext) vm.Con
 		blockHash = header.Hash()
 	}
 
+	// todo 就根据msg 在这里判断 使用 VM Interpreter 的类型
 	return vm.Context{
 		CanTransfer: CanTransfer,
 		Transfer:    Transfer,

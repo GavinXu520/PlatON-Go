@@ -114,9 +114,13 @@ func (w *WasmLDBCache) Add(key common.Address, value *WasmModule) bool {
 func (w *WasmLDBCache) Get(key common.Address) (*WasmModule, bool) {
 	w.lock.Lock()
 	defer w.lock.Unlock()
+	// todo 先从 lru中拿 对应的 module
 	value, ok := w.lru.Get(key)
+
+	// 没有拿到的话， 考虑从 db 拿
 	if !ok {
 		if w.db != nil {
+			// 去 db 拿 该 contract addr 对应的可复用 module
 			if value, err := w.db.Get(key.Bytes(), nil); err == nil {
 				module := WasmModule{}
 				buffer := bytes.NewReader(value)
@@ -125,6 +129,9 @@ func (w *WasmLDBCache) Get(key common.Address) (*WasmModule, bool) {
 					log.Error("decode module err:", err)
 					return nil, false
 				}
+
+				// 在返回之前先将 该contract Addr 对应的 module加入 lru中
+				// 并，返回module
 				w.lru.Add(key, &module)
 				return &module, true
 			}

@@ -92,7 +92,7 @@ func Execute(code, input []byte, cfg *Config) ([]byte, *state.StateDB, error) {
 	// set the receiver's abi for execution
 	//cfg.State.SetAbi(address, abi)
 	// Call the code with the given configuration.
-	ret, _, err := vmenv.Call(
+	ret, _, err := vmenv.Call(// todo life的 runtime， test中使用
 		sender,
 		common.BytesToAddress([]byte("wasmcontract")),
 		input,
@@ -140,7 +140,7 @@ func Call(address common.Address, input []byte, cfg *Config) ([]byte, uint64, er
 
 	sender := cfg.State.GetOrNewStateObject(cfg.Origin)
 	// Call the code with the given configuration.
-	ret, leftOverGas, err := vmenv.Call(
+	ret, leftOverGas, err := vmenv.Call( // todo life 中的 call，供 cmd 和 test 使用
 		sender,
 		address,
 		input,

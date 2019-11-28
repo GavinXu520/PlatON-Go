@@ -77,6 +77,9 @@ func (self *WasmStateDB) CallValue() *big.Int {
 	self.evm.StateDB.AddLog(log)
 }*/
 
+/**
+todo WASM 的 添加log接口，供Event指令调用
+ */
 func (self *WasmStateDB) AddLog(address common.Address, topics []common.Hash, data []byte, bn uint64)  {
 	log := &types.Log {
 		Address: address,
@@ -88,19 +91,33 @@ func (self *WasmStateDB) AddLog(address common.Address, topics []common.Hash, da
 }
 
 
+/**
+todo WASM 的 SetState的接口， 供SetState指令调用
+ */
 func (self *WasmStateDB) SetState(key []byte, value []byte)  {
 	self.evm.StateDB.SetState(self.Address(), key, value)
 }
 
+
+/**
+todo WASM 的 GetState的接口， 供GetState指令调用
+ */
 func (self *WasmStateDB) GetState(key []byte) []byte {
 	return self.evm.StateDB.GetState(self.Address(), key)
 }
 
+/**
+todo WASM 的getNonce的接口， 供getNonce指令调用
+ */
 func (self *WasmStateDB) GetCallerNonce() int64 {
 	addr := self.contract.Caller()
 	return int64(self.evm.StateDB.GetNonce(addr))
 }
 
+
+/**
+todo WASM 的 转账接口，供转账指令调用
+ */
 func (self *WasmStateDB) Transfer(toAddr common.Address, value *big.Int) (ret []byte, leftOverGas uint64, err error) {
 	caller := self.contract
 	
@@ -110,16 +127,26 @@ func (self *WasmStateDB) Transfer(toAddr common.Address, value *big.Int) (ret []
 	}
 	fmt.Println("Transfer to:", toAddr.String())
 	fmt.Println("Transfer caller:", caller.self.Address().Hex())
+
+	// 实际上 transfer 就是对合约的一次 call 调用
 	ret, returnGas, err := self.evm.Call(caller, toAddr, nil, gas, value)
 	return ret, returnGas, err
 }
 
+
+
+/**
+todo WASM 的 Call调用接口， 供call指令调用
+ */
 func (self *WasmStateDB) Call(addr, param []byte) ([]byte, error) {
 	
 	ret, _, err := self.evm.Call(self.contract, common.HexToAddress(hex.EncodeToString(addr)), param, self.contract.Gas, self.contract.value)
 	return ret, err
 }
 
+/**
+todo WASM 的委托调用接口，  供delegateCall指令调用
+ */
 func (self *WasmStateDB) DelegateCall(addr, param []byte) ([]byte, error) {
 	
 	ret, _, err := self.evm.DelegateCall(self.contract, common.HexToAddress(hex.EncodeToString(addr)), param, self.contract.Gas)

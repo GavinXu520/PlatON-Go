@@ -23,12 +23,21 @@ import (
 )
 
 var (
+
+	// todo 存放指令集
 	cfc  = newCfcSet()
+
+	// todo 全局变量集
 	cgbl = newGlobalSet()
 )
 
+
+/**
+todo cland 的解释器
+ */
 type CResolver struct{}
 
+// 解析出 Func
 func (r *CResolver) ResolveFunc(module, field string) *exec.FunctionImport {
 	df := &exec.FunctionImport{
 		Execute: func(vm *exec.VirtualMachine) int64 {
@@ -39,6 +48,7 @@ func (r *CResolver) ResolveFunc(module, field string) *exec.FunctionImport {
 		},
 	}
 
+	// todo 使用预先定于的 全局指令集中解出指令
 	if m, exist := cfc[module]; exist == true {
 		if f, exist := m[field]; exist == true {
 			return f
@@ -50,7 +60,11 @@ func (r *CResolver) ResolveFunc(module, field string) *exec.FunctionImport {
 	}
 }
 
+
+// 解析出 Global
 func (r *CResolver) ResolveGlobal(module, field string) int64 {
+
+	// todo 从预先定义好的 全局变量集中解出，全局变量
 	if m, exist := cgbl[module]; exist == true {
 		if g, exist := m[field]; exist == true {
 			return g
@@ -65,9 +79,29 @@ func (r *CResolver) ResolveGlobal(module, field string) int64 {
 	}
 }
 
+/**
+todo 指令集函数
+	在 解析器解析 Func 和 Global 时有用到
+	里头有 执行函数 和 就、gas计价函数的定义
+	具体的gas 当成指令插入，是在外面 WASM-Interpreter.Run() 中做的。
+	这Run 中调用 module.Module, module.FunctionCode, err = exec.ParseModuleAndFunc(code, nil)
+	即， vm.go 的 `ParseModuleAndFunc()` ，而在这个函数中有一句
+	。
+	functionCode, err := m.CompileForInterpreter(nil)
+	。
+	这一句就是插入 gas 了
+ */
 func newCfcSet() map[string]map[string]*exec.FunctionImport {
+
+	// todo 疑问？ 为什么是双层 map ！？ 目前只有 env 有用
 	return map[string]map[string]*exec.FunctionImport{
 		"env": {
+
+			// todo 指令集，包含 执行函数 和 gas计价函数
+			//
+
+
+			// todo 一些常用指令
 			"malloc":       &exec.FunctionImport{Execute: envMalloc, GasCost: envMallocGasCost},
 			"free":         &exec.FunctionImport{Execute: envFree, GasCost: envFreeGasCost},
 			"calloc":       &exec.FunctionImport{Execute: envCalloc, GasCost: envCallocGasCost},
@@ -95,6 +129,9 @@ func newCfcSet() map[string]map[string]*exec.FunctionImport {
 
 			// compiler builtins
 			// arithmetic long double
+			//
+			// 编译器内置
+			// 算术 长浮点
 			"__ashlti3": &exec.FunctionImport{Execute: env__ashlti3, GasCost: env__ashlti3GasCost},
 			"__ashrti3": &exec.FunctionImport{Execute: env__ashrti3, GasCost: env__ashrti3GasCost},
 			"__lshlti3": &exec.FunctionImport{Execute: env__lshlti3, GasCost: env__lshlti3GasCost},
@@ -110,6 +147,8 @@ func newCfcSet() map[string]map[string]*exec.FunctionImport {
 			"__divtf3":  &exec.FunctionImport{Execute: env__divtf3, GasCost: env__divtf3GasCost},
 
 			// conversion long double
+			//
+			// todo 浮点转换指令集
 			"__floatsitf":   &exec.FunctionImport{Execute: env__floatsitf, GasCost: env__floatsitfGasCost},
 			"__floatunsitf": &exec.FunctionImport{Execute: env__floatunsitf, GasCost: env__floatunsitfGasCost},
 			"__floatditf":   &exec.FunctionImport{Execute: env__floatditf, GasCost: env__floatditfGasCost},
@@ -141,6 +180,8 @@ func newCfcSet() map[string]map[string]*exec.FunctionImport {
 			"__negtf2":   &exec.FunctionImport{Execute: env__negtf2, GasCost: env__negtf2GasCost},
 
 			// for blockchain function
+			//
+			// todo 查询外部函数的指令
 			"gasPrice":     &exec.FunctionImport{Execute: envGasPrice, GasCost: constGasFunc(compiler.GasQuickStep)},
 			"blockHash":    &exec.FunctionImport{Execute: envBlockHash, GasCost: constGasFunc(compiler.GasQuickStep)},
 			"number":       &exec.FunctionImport{Execute: envNumber, GasCost: constGasFunc(compiler.GasQuickStep)},
@@ -159,6 +200,7 @@ func newCfcSet() map[string]map[string]*exec.FunctionImport {
 			"getStateSize": &exec.FunctionImport{Execute: envGetStateSize, GasCost: envGetStateSizeGasCost},
 
 			// support for vc
+			// todo vc 相关调用指令集
 			//"vc_InitGadgetEnv":          &exec.FunctionImport{Execute: envInitGadgetEnv, GasCost: envInitGadgetEnvGasCost},
 			//"vc_UninitGadgetEnv":        &exec.FunctionImport{Execute: envUninitGadgetEnv, GasCost: envUninitGadgetEnvGasCost},
 			//"vc_CreatePBVar":            &exec.FunctionImport{Execute: envCreatePBVarEnv, GasCost: envCreatePBVarGasCost},
@@ -169,13 +211,17 @@ func newCfcSet() map[string]map[string]*exec.FunctionImport {
 			//"vc_GenerateProofAndResult": &exec.FunctionImport{Execute: envGenProofAndResultEnv, GasCost: envGenProofAndResultGasCost},
 			//"vc_Verify":                 &exec.FunctionImport{Execute: envVerifyEnv, GasCost: envVerifyGasCost},
 
-			// supplement
+			// supplement 补充
+			//
+			// todo 一些合约中调用的函数，如： transfer， call， delegateCall 之类的
 			"getCallerNonce": &exec.FunctionImport{Execute: envGetCallerNonce, GasCost: constGasFunc(compiler.GasQuickStep)},
 			"callTransfer":   &exec.FunctionImport{Execute: envCallTransfer, GasCost: constGasFunc(compiler.GasQuickStep)},
-
+						// todo 最终都是调用了 call()
 			"platonCall":               &exec.FunctionImport{Execute: envPlatonCall, GasCost: envPlatonCallGasCost},
 			"platonCallInt64":          &exec.FunctionImport{Execute: envPlatonCallInt64, GasCost: envPlatonCallInt64GasCost},
 			"platonCallString":         &exec.FunctionImport{Execute: envPlatonCallString, GasCost: envPlatonCallStringGasCost},
+
+						// todo 最终都是调用了 delegateCall()
 			"platonDelegateCall":       &exec.FunctionImport{Execute: envPlatonDelegateCall, GasCost: envPlatonCallStringGasCost},
 			"platonDelegateCallInt64":  &exec.FunctionImport{Execute: envPlatonDelegateCallInt64, GasCost: envPlatonCallStringGasCost},
 			"platonDelegateCallString": &exec.FunctionImport{Execute: envPlatonDelegateCallString, GasCost: envPlatonCallStringGasCost},
@@ -185,6 +231,8 @@ func newCfcSet() map[string]map[string]*exec.FunctionImport {
 
 func newGlobalSet() map[string]map[string]int64 {
 	return map[string]map[string]int64{
+
+		// todo 疑问？ 为什么是双层 map ！？ 目前只有 env 有用
 		"env": {
 			"stderr": 0,
 			"stdin":  0,
@@ -701,6 +749,7 @@ func envGetCallerNonce(vm *exec.VirtualMachine) int64 {
 	return vm.Context.StateDB.GetCallerNonce()
 }
 
+// todo 指令，调用 transfer
 func envCallTransfer(vm *exec.VirtualMachine) int64 {
 	key := int(int32(vm.GetCurrentFrame().Locals[0]))
 	keyLen := int(int32(vm.GetCurrentFrame().Locals[1]))
@@ -721,6 +770,7 @@ func envCallTransfer(vm *exec.VirtualMachine) int64 {
 	}
 }
 
+// todo 指令，
 func envPlatonCall(vm *exec.VirtualMachine) int64 {
 	addr := int(int32(vm.GetCurrentFrame().Locals[0]))
 	params := int(int32(vm.GetCurrentFrame().Locals[1]))
@@ -732,6 +782,8 @@ func envPlatonCall(vm *exec.VirtualMachine) int64 {
 	}
 	return 0
 }
+
+// todo delegateCall 指令
 func envPlatonDelegateCall(vm *exec.VirtualMachine) int64 {
 	addr := int(int32(vm.GetCurrentFrame().Locals[0]))
 	params := int(int32(vm.GetCurrentFrame().Locals[1]))
@@ -797,6 +849,10 @@ func envPlatonDelegateCallString(vm *exec.VirtualMachine) int64 {
 	return MallocString(vm, string(ret))
 }
 
+
+/**
+todo 三种计价指令， 目前默认都是  1 gas
+ */
 func envPlatonCallGasCost(vm *exec.VirtualMachine) (uint64, error) {
 	return 1, nil
 }
