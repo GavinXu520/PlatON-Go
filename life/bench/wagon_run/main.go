@@ -88,6 +88,8 @@ func run(w io.Writer, fname string, verify bool, entryName string) {
 		log.Printf("running exported functions with input parameters is not supported")
 		return
 	}
+
+	// todo 直接用 wagon-vm 执行 指令
 	o, err := vm.ExecCode(i)
 	if err != nil {
 		fmt.Fprintf(w, "\n")

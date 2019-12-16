@@ -53,7 +53,9 @@ type EVMInterpreter struct {
 	gasTable params.GasTable
 	intPool  *intPool
 
+	// todo  是否进行状态修改, 只有 staticCall 进来才会有
 	readOnly   bool   // Whether to throw on stateful modifications
+	// todo 上次CALL的返回数据以供后续重用
 	returnData []byte // Last CALL's return data for subsequent reuse
 }
 
@@ -67,6 +69,7 @@ func NewEVMInterpreter(evm *EVM, cfg Config) *EVMInterpreter {
 	}
 
 	return &EVMInterpreter{
+		//
 		evm:      evm,
 		cfg:      cfg,
 		gasTable: evm.ChainConfig().GasTable(evm.BlockNumber),

@@ -93,7 +93,7 @@ type VMContext struct {
 	Config   VMConfig
 	Addr     [20]byte
 	GasUsed  uint64
-	GasLimit uint64
+	GasLimit uint64  // 该Gas其实就是 tx中给的 gas
 
 	StateDB StateDB
 	Log     log.Logger
@@ -107,6 +107,8 @@ type VMMemory struct {
 }
 
 // Frame represents a call frame.
+//
+// 帧表示调用帧
 type Frame struct {
 	FunctionID   int
 	Code         []byte
@@ -125,12 +127,20 @@ type ImportResolver interface {
 	ResolveGlobal(module, field string) int64
 }
 
+
+/**
+根据 code 解出 module 和 func Code
+ */
 func ParseModuleAndFunc(code []byte, gasPolicy compiler.GasPolicy) (*compiler.Module, []compiler.InterpreterCode, error) {
 	m, err := compiler.LoadModule(code)
 	if err != nil {
 		return nil, nil, err
 	}
 
+
+	/**
+	todo 这里是编译 插入 gas !?
+	 */
 	functionCode, err := m.CompileForInterpreter(nil)
 	if err != nil {
 		return nil, nil, err
@@ -141,22 +151,48 @@ func ParseModuleAndFunc(code []byte, gasPolicy compiler.GasPolicy) (*compiler.Mo
 func NewVirtualMachineWithModule(m *compiler.Module, functionCode []compiler.InterpreterCode, context *VMContext, impResolver ImportResolver, gasPolicy compiler.GasPolicy) (_retVM *VirtualMachine, retErr error) {
 	defer utils.CatchPanic(&retErr)
 
+	// todo 实例化一个 table容器
 	table := make([]uint32, 0)
+	// todo 实例化一个 全局变量的容器
 	globals := make([]int64, 0)
+
+	// todo 实例化一个 装有 func的容器
 	funcImports := make([]*FunctionImport, 0)
 
+	// todo 如果 module 的import 不为nil 且 wasm 执行器中的解释器不为 nil
 	if m.Base.Import != nil && impResolver != nil {
+
+		// todo 先遍历module的import的条目
+		//
 		for _, imp := range m.Base.Import.Entries {
+
+			// 逐个判断 import 条目的类型
 			switch imp.Type.Kind() {
+
+			// 如果是 function 类型的话
 			case wasm.ExternalFunction:
+
+				// todo 根据module+field，交由 func解释器，解释出 func并收集起来
 				funcImports = append(funcImports, impResolver.ResolveFunc(imp.ModuleName, imp.FieldName))
+
+			// 如果是 全局变量的话
 			case wasm.ExternalGlobal:
+
+				// 根据nodule+field, 交由 全局变量解释器， 解释出 全局变量并收集起来
 				globals = append(globals, impResolver.ResolveGlobal(imp.ModuleName, imp.FieldName))
+
+			// 如果是 memory的话
 			case wasm.ExternalMemory:
 				// TODO: Do we want a real import?
+
+				//
+				// todo 当前 module 如果已经具备了 memory，且memory的条目不为空
+				//    则，抛 panic， 因为： 党已经存在memory时是不可以再 导入其他 memory 的
 				if m.Base.Memory != nil && len(m.Base.Memory.Entries) > 0 {
 					panic("cannot import another memory while we already have one")
 				}
+
+				// 否则，新建 memory
 				m.Base.Memory = &wasm.SectionMemories{
 					Entries: []wasm.Memory{
 						wasm.Memory{
@@ -166,11 +202,17 @@ func NewVirtualMachineWithModule(m *compiler.Module, functionCode []compiler.Int
 						},
 					},
 				}
+
+			// 如果是 table的话
 			case wasm.ExternalTable:
 				// TODO: Do we want a real import?
+				//
+				// todo 同memory一样，都是已经存在的话，就不给导入新的table
 				if m.Base.Table != nil && len(m.Base.Table.Entries) > 0 {
 					panic("cannot import another table while we already have one")
 				}
+
+				// 否则，新建 table
 				m.Base.Table = &wasm.SectionTables{
 					Entries: []wasm.Table{
 						wasm.Table{
@@ -180,6 +222,8 @@ func NewVirtualMachineWithModule(m *compiler.Module, functionCode []compiler.Int
 						},
 					},
 				}
+
+			// 四种类型之外的类型， 不存在
 			default:
 				panic(fmt.Errorf("import kind not supported: %d", imp.Type.Kind()))
 			}
@@ -187,11 +231,17 @@ func NewVirtualMachineWithModule(m *compiler.Module, functionCode []compiler.Int
 	}
 
 	// Load global entries.
+	//
+	// todo 加载当前module的全局变量
 	for _, entry := range m.Base.GlobalIndexSpace {
+
+		// todo 继续追加到 globals 容器中
 		globals = append(globals, execInitExpr(entry.Init, globals))
 	}
 
 	// Populate table elements.
+	//
+	// todo 填充 table 元素
 	if m.Base.Table != nil && len(m.Base.Table.Entries) > 0 {
 		t := &m.Base.Table.Entries[0]
 
@@ -199,11 +249,16 @@ func NewVirtualMachineWithModule(m *compiler.Module, functionCode []compiler.Int
 			panic("max table size exceeded")
 		}
 
+		// 初始化一个 table
 		table = make([]uint32, int(t.Limits.Initial))
 		for i := 0; i < int(t.Limits.Initial); i++ {
 			table[i] = 0xffffffff
 		}
 		if m.Base.Elements != nil && len(m.Base.Elements.Entries) > 0 {
+
+			// 将 module 中的 element 填充到 table中
+			//
+			// todo 干嘛用！？
 			for _, e := range m.Base.Elements.Entries {
 				offset := int(execInitExpr(e.Offset, globals))
 				copy(table[offset:], e.Elems)
@@ -243,6 +298,8 @@ func NewVirtualMachineWithModule(m *compiler.Module, functionCode []compiler.Int
 	//	}
 	//}
 
+
+	// 填充 <加载> 线性内存
 	memory := &Memory{}
 	if m.Base.Memory != nil && len(m.Base.Memory.Entries) > 0 {
 		initialLimit := int(m.Base.Memory.Entries[0].Limits.Initial)
@@ -258,6 +315,8 @@ func NewVirtualMachineWithModule(m *compiler.Module, functionCode []compiler.Int
 		memory.Size = (len(memory.tree) + 1) / 2
 
 		if m.Base.Data != nil && len(m.Base.Data.Entries) > 0 {
+
+			// todo 将 module 中的data 填充到 memory中
 			for _, e := range m.Base.Data.Entries {
 				offset := int(execInitExpr(e.Offset, globals))
 				copy(memory.Memory[int(offset):], e.Data)
@@ -265,7 +324,13 @@ func NewVirtualMachineWithModule(m *compiler.Module, functionCode []compiler.Int
 		}
 	}
 
+
+	/**
+	todo
+		实例化一个 life vm， 并返回
+	 */
 	return &VirtualMachine{
+		// 将当前 module 注入当前 lvm 中了
 		Module:          m,
 		Context:         context,
 		FunctionCode:    functionCode,
@@ -289,11 +354,13 @@ func NewVirtualMachine(code []byte, context *VMContext, impResolver ImportResolv
 		fmt.Println("Warning: JIT support is incomplete and the internals are likely to change in the future.")
 	}
 
+	// 根据 code 解出 module 和 func Code
 	m, functionCode, err := ParseModuleAndFunc(code, gasPolicy)
 	if err != nil {
 		return nil, err
 	}
 
+	// TODO 根据 module实例化 lifevm
 	return NewVirtualMachineWithModule(m, functionCode, context, impResolver, gasPolicy)
 
 }
@@ -346,6 +413,8 @@ func (f *Frame) Destroy(vm *VirtualMachine) {
 }
 
 // GetCurrentFrame returns the current frame.
+//
+// GetCurrentFrame: 返回当前帧
 func (vm *VirtualMachine) GetCurrentFrame() *Frame {
 	if vm.Context.Config.MaxCallStackDepth != 0 && vm.CurrentFrame >= vm.Context.Config.MaxCallStackDepth {
 		panic("max call stack depth exceeded")
@@ -363,6 +432,7 @@ func (vm *VirtualMachine) getExport(key string, kind wasm.External) (int, bool) 
 		return -1, false
 	}
 
+	// 从当前 module 中加载出对应的 导出内容
 	entry, ok := vm.Module.Base.Export.Entries[key]
 	if !ok {
 		return -1, false
@@ -381,6 +451,8 @@ func (vm *VirtualMachine) GetGlobalExport(key string) (int, bool) {
 }
 
 // GetFunctionExport returns the function export with the given name.
+//
+// GetFunctionExport: 返回具有给定名称的函数导出.
 func (vm *VirtualMachine) GetFunctionExport(key string) (int, bool) {
 	return vm.getExport(key, wasm.ExternalFunction)
 }
@@ -396,6 +468,8 @@ func (vm *VirtualMachine) PrintStackTrace() {
 }
 
 // Ignite initializes the first call frame.
+//
+// Ignite: 初始化第一个调用帧
 func (vm *VirtualMachine) Ignite(functionID int, params ...int64) {
 	if vm.ExitError != nil {
 		panic("last execution exited with error; cannot ignite.")
@@ -437,6 +511,12 @@ func (vm *VirtualMachine) AddAndCheckGas(delta uint64) {
 // This function may return at any point and is guaranteed to return
 // at least once every 10000 instructions. Caller is responsible for
 // detecting VM status in a loop.
+//
+/**
+Execute:
+启动虚拟机主指令处理循环。
+该函数可以随时返回，并保证每10000条指令至少返回一次。 调用方负责循环检测VM状态。
+ */
 func (vm *VirtualMachine) Execute() {
 	if vm.Exited == true {
 		panic("attempting to execute an exited vm")
@@ -478,6 +558,7 @@ func (vm *VirtualMachine) Execute() {
 		ins := opcodes.Opcode(frame.Code[frame.IP+4])
 		frame.IP += 5
 
+		// todo 类似 evm 的每次计算gas 的计价， 可是前面不是已经有 插值 gas 指令了么， 为什么还要边运行指令，边查计算gas ？
 		cost, err := vm.JumpTable[ins].GasCost(vm, frame)
 		if err != nil || (cost+vm.Context.GasUsed) > vm.Context.GasLimit {
 			panic(fmt.Sprintf("out of gas  cost:%d GasUsed:%d GasLimit:%d", cost, vm.Context.GasUsed, vm.Context.GasLimit))
@@ -1432,6 +1513,8 @@ func (vm *VirtualMachine) Execute() {
 			vm.CurrentFrame--
 			if vm.CurrentFrame == -1 {
 				vm.Exited = true
+
+				// todo 将返回值，赋值
 				vm.ReturnValue = val
 				return
 			} else {
@@ -1522,6 +1605,8 @@ func (vm *VirtualMachine) Execute() {
 		case opcodes.InvokeImport:
 			importID := int(LE.Uint32(frame.Code[frame.IP : frame.IP+4]))
 			frame.IP += 4
+
+			// todo 妈的，这个Delegate 只有这里有赋值， 这个就是 `委托调用` ？
 			vm.Delegate = func() {
 				frame.Regs[valueID] = vm.FunctionImports[importID].Execute(vm)
 			}

@@ -9,6 +9,9 @@ import (
 	"time"
 )
 
+/**
+todo  此处是 life vm 的入口
+ */
 func main() {
 	//entryFunctionFlag := flag.String("entry", "app_main", "entry function id")
 	//dynamicPages := flag.Int("dynamicPages", 1, "dynamic memory pages")
@@ -37,6 +40,8 @@ func main() {
 	rootLog.SetHandler(log.StderrHandler)
 
 	// Instantiate a new WebAssembly VM with a few resolved imports.
+	//
+	// 使用一些已解析的导入实例化新的WebAssembly VM
 	vm, err := exec.NewVirtualMachine(input, &exec.VMContext{
 		Config: exec.VMConfig{
 			EnableJIT:          *jitFlag,

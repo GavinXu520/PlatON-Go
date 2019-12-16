@@ -13,8 +13,9 @@ var (
 func NewResolver(lang int) exec.ImportResolver {
 	switch lang {
 	case clang:
+		// todo 实例化 clang 的解释器
 		return &CResolver{}
-	case golang:
+	case golang: // todo 还不支持  golang 解释器
 	default:
 	}
 	return nil

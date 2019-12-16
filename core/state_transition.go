@@ -204,11 +204,26 @@ func (st *StateTransition) TransitionDb() (ret []byte, usedGas uint64, failed bo
 		vmerr error
 	)
 
+	/**
+	todo 建议在这个地方 添加 VM-Type-Checker
+		用于校验 是使用 EVM 还是使用 WASM
+	 */
+
+
+	/**
+	todo 紧接着使用 exec 去执行 evm 或者 wasm
+	 */
+
+
 	// todo: shield contract to created in temporary
 	if contractCreation {
 		return nil, params.TxGasContractCreation, false, fmt.Errorf("contract creation is not allowed")
 	}
 
+
+	/**
+	todo 或者是 这里的 if-else 还继续保留， 因为不管是 evm 还是 wasm 其实都是需要根据 to 来判断是 部署合约还是执行合约
+	 */
 	if contractCreation {
 		ret, _, st.gas, vmerr = evm.Create(sender, st.data, st.gas, st.value)
 	} else {

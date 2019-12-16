@@ -29,9 +29,21 @@ type InterpreterCode struct {
 	JITDone    bool
 }
 
+
+/**
+todo 根据 code 构造出 module
+ */
 func LoadModule(raw []byte) (*Module, error) {
+
+	/**
+	 todo 重点就是这个 reader
+	 */
 	reader := bytes.NewReader(raw)
 
+
+	/**
+	TODO 注意 这个就是调用wagon 的根据 code 解出 module
+	 */
 	m, err := wasm.ReadModule(reader, nil)
 	if err != nil {
 		runtime.GC()
@@ -53,6 +65,7 @@ func LoadModule(raw []byte) (*Module, error) {
 				if err != nil || ty != 1 {
 					break
 				}
+				// 使用 leb128 的编码
 				payloadLen, err := leb128.ReadVarUint32(r)
 				if err != nil {
 					panic(err)
@@ -89,6 +102,10 @@ func LoadModule(raw []byte) (*Module, error) {
 							if n != len(name) {
 								panic("len mismatch")
 							}
+
+							/**
+							todo 解出 funcName
+							 */
 							functionNames[int(index)] = string(name)
 							//fmt.Printf("%d -> %s\n", int(index), string(name))
 						}
@@ -100,14 +117,22 @@ func LoadModule(raw []byte) (*Module, error) {
 	}
 
 	return &Module{
+
+		// 真实的 module
 		Base:          m,
+		// module中所有 funcName
 		FunctionNames: functionNames,
 	}, nil
 }
-
+// gp: gas规则器, 目前传入为 nil
 func (m *Module) CompileForInterpreter(gp GasPolicy) (_retCode []InterpreterCode, retErr error) {
+
+	// todo 处理 panic， 可以的这种方式
 	defer utils.CatchPanic(&retErr)
 
+	/**
+	todo 最终返回这个鸟东西
+	 */
 	ret := make([]InterpreterCode, 0)
 	importTypeIDs := make([]int, 0)
 
@@ -136,6 +161,8 @@ func (m *Module) CompileForInterpreter(gp GasPolicy) (_retCode []InterpreterCode
 
 			code := buf.Bytes()
 
+
+			// todo 先采集所有 import 的func
 			ret = append(ret, InterpreterCode{
 				NumRegs:    2,
 				NumParams:  len(ty.ParamTypes),
@@ -150,15 +177,38 @@ func (m *Module) CompileForInterpreter(gp GasPolicy) (_retCode []InterpreterCode
 	numFuncImports := len(ret)
 	ret = append(ret, make([]InterpreterCode, len(m.Base.FunctionIndexSpace))...)
 
+
+	// 再遍历当前module中所有的 funcs
 	for i, f := range m.Base.FunctionIndexSpace {
 		//fmt.Printf("Compiling function %d (%+v) with %d locals\n", i, f.Sig, len(f.Body.Locals))
+		// 分解给定的func。 它还将 func的父module作为参数来查找fn引用的任何其他函数。
 		d, err := disasm.Disassemble(f, m.Base)
 		if err != nil {
 			panic(err)
 		}
+
+		/**
+		todo 实例化一个 编译器
+
+		todo 每个 func 都对各自的 compiler <因为 function的的语法结构不一样， 需要各自单独处理>
+		 */
 		compiler := NewSSAFunctionCompiler(m.Base, d)
+
+		// 给 compiler 加入
 		compiler.CallIndexOffset = numFuncImports
 		compiler.Compile(importTypeIDs)
+
+		/**
+		todo ##########################
+		todo ##########################
+		todo ##########################
+
+		todo 这里就是插入 gas
+
+		todo ##########################
+		todo ##########################
+		todo ##########################
+		 */
 		if gp != nil {
 			compiler.InsertGasCounters(gp)
 		}

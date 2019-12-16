@@ -45,12 +45,37 @@ type Contract struct {
 	// CallerAddress is the result of the caller which initialised this
 	// contract. However when the "call method" is delegated this value
 	// needs to be initialised to that of the caller's caller.
+
+
+	/**
+	CallerAddress是调用方初始化此 contract 的结果。 但是，在委托调用“调用方法”时，需要将此值初始化为调用方的调用方的addr。
+	普通调用:
+	A -> B, 则该值为 A
+
+	委托调用:
+	A -> B -> C, 则该值为 A
+	*/
 	CallerAddress common.Address
+
+	// todo 这个是指合约的调用方， 可能是一个 账户Addr 也可能是一个 contract实例
 	caller        ContractRef
+	// todo 这个只能是 合约本身的地址
 	self          ContractRef
 
+
+	/**
+	todo JUMPDEST分析的结果
+
+	destinations: 目的地
+
+	在 (d destinations) has() 中，有追加 bitvec
+
+	todo 貌似只有 opJump() 和 opJumpi() 中使用
+	*/
 	jumpdests destinations // result of JUMPDEST analysis.
 
+
+	//
 	Code     []byte
 	CodeHash common.Hash
 	CodeAddr *common.Address
@@ -65,13 +90,22 @@ type Contract struct {
 
 	Args []byte
 
+
+	// todo 是否 委托调用的 标识位
 	DelegateCall bool
 }
 
 // NewContract returns a new contract environment for the execution of EVM.
 func NewContract(caller ContractRef, object ContractRef, value *big.Int, gas uint64) *Contract {
+
+	// todo 如果是tx直接call 的话，则 caller.Address就是 sender
+	// todo 如果是 合约调合约的话, A -> B 的时候， caller 就是 A， 那么 caller.Address就是 A.Address也就是 A.self.Addr 也就是 A合约的Addr
+
+	// todo 创建一个关于 object 的合约上下文，也就是被调用合约的上下文
 	c := &Contract{CallerAddress: caller.Address(), caller: caller, self: object, Args: nil}
 
+
+	// todo 注意这个就是，合约调合约才会走这个
 	if parent, ok := caller.(*Contract); ok {
 		// Reuse JUMPDEST analysis from parent context if available.
 		c.jumpdests = parent.jumpdests
@@ -91,10 +125,16 @@ func NewContract(caller ContractRef, object ContractRef, value *big.Int, gas uin
 // AsDelegate sets the contract to be a delegate call and returns the current
 // contract (for chaining calls)
 func (c *Contract) AsDelegate() *Contract {
+
+	// todo 开启 delegate 标识位
 	c.DelegateCall = true
 	// NOTE: caller must, at all times be a contract. It should never happen
 	// that caller is something other than a Contract.
 	parent := c.caller.(*Contract)
+
+	/**
+	todo 将 tx 的sender 逐步传递下去， 即在 solidity 中拿到的 msg.sender 一定一直都是 tx 的sender
+	 */
 	c.CallerAddress = parent.CallerAddress
 	c.value = parent.value
 

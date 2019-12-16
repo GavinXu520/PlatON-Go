@@ -371,6 +371,8 @@ type Message struct {
 	gasPrice   *big.Int
 	data       []byte
 	checkNonce bool
+
+	// todo 需要在 msg 里头添加 是什么vm 的选择
 }
 
 func NewMessage(from common.Address, to *common.Address, nonce uint64, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte, checkNonce bool) Message {
