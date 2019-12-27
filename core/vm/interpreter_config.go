@@ -17,4 +17,5 @@ type Config struct {
 	ConsoleOutput bool
 
 	// todo 这里添加一个 WASM 的具体实现类型吧
+
 }

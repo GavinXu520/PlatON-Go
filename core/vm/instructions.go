@@ -463,6 +463,7 @@ func opExtCodeSize(pc *uint64, interpreter *EVMInterpreter, contract *Contract, 
 	return nil, nil
 }
 
+// todo 获取 合约code的长度
 func opCodeSize(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {
 	l := interpreter.intPool.get().SetInt64(int64(len(contract.Code)))
 	stack.push(l)
@@ -470,15 +471,24 @@ func opCodeSize(pc *uint64, interpreter *EVMInterpreter, contract *Contract, mem
 	return nil, nil
 }
 
+// todo 将合约代码拷贝到内存中并返回
 func opCodeCopy(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {
 	var (
-		memOffset  = stack.pop()
-		codeOffset = stack.pop()
-		length     = stack.pop()
+		// todo 从栈顶 弹出 三个重要的元素
+		memOffset  = stack.pop() // 可用内存的起始索引
+		codeOffset = stack.pop() // 真实的code在 `contract.Code` 中的起始位置
+		length     = stack.pop() // 真实 code 的长度
 	)
+
+	//  todo 注意， 部署合约时， tx.Data 中是这样纸的  code|args1|args2|...|argsN
+	//  		其中， contract.Code就是 tx.Data，所以是  code|args1|args2|...|argsN 的形式
+	// 			那么，我们需要将 contract.Code 进行拆分出真实 code 部分
+	//
+	// todo 将数据的 `length` 从`codeOffset` 拷贝到`memoryOffset`
 	codeCopy := getDataBig(contract.Code, codeOffset, length)
 	memory.Set(memOffset.Uint64(), length.Uint64(), codeCopy)
 
+	// todo  这一行回收对象（大整数）后面使用。这只是一个高效的优化。
 	interpreter.intPool.put(memOffset, codeOffset, length)
 	return nil, nil
 }
@@ -586,6 +596,7 @@ func opMload(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory
 	return nil, nil
 }
 
+// todo 开辟一块 存储空间
 func opMstore(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {
 	// pop value of the stack
 	mStart, val := stack.pop(), stack.pop()
@@ -725,7 +736,6 @@ func opCreate2(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memo
 	return nil, nil
 }
 
-
 // todo evm 执行code 指令
 func opCall(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {
 	// Pop gas. The actual gas in in interpreter.evm.callGasTemp.
@@ -742,12 +752,11 @@ func opCall(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory 
 		gas += params.CallStipend
 	}
 
-
 	/**
 	todo 假设是合约调 合约
 		A -> B  contract 就是 tx 开始是 new 的 contract <也就是A 合约的上下文>
 				toAddr 是 B 合约， 则 本地调用修改的是 B 的state
-	 */
+	*/
 	ret, returnGas, err := interpreter.evm.Call(contract, toAddr, args, gas, value)
 	if err != nil {
 		stack.push(interpreter.intPool.getZero())
@@ -762,7 +771,6 @@ func opCall(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory 
 	interpreter.intPool.put(addr, value, inOffset, inSize, retOffset, retSize)
 	return ret, nil
 }
-
 
 // todo evm 执行 CallCode 指令， 其实CallCode已经作废，建议使用 DelegateCall 代替，
 // 		CallCode() 和 DelegateCall() 的调用 msg.sender 不一样哦
@@ -795,7 +803,6 @@ func opCallCode(pc *uint64, interpreter *EVMInterpreter, contract *Contract, mem
 	return ret, nil
 }
 
-
 // todo evm 执行 DelegateCall 指令，已经作废，建议使用 DelegateCall 代替  CallCode
 // 		CallCode() 和 DelegateCall() 的调用 msg.sender 不一样哦
 func opDelegateCall(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {
@@ -810,7 +817,7 @@ func opDelegateCall(pc *uint64, interpreter *EVMInterpreter, contract *Contract,
 
 	/**
 	todo 真正发起 委托调用了
-	 */
+	*/
 	ret, returnGas, err := interpreter.evm.DelegateCall(contract, toAddr, args, gas)
 	if err != nil {
 		stack.push(interpreter.intPool.getZero())
@@ -826,7 +833,6 @@ func opDelegateCall(pc *uint64, interpreter *EVMInterpreter, contract *Contract,
 	return ret, nil
 }
 
-
 // todo evm 的 staticCall指令， 目前 solidity中还没使用的方式
 func opStaticCall(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {
 	// Pop gas. The actual gas is in interpreter.evm.callGasTemp.
@@ -840,7 +846,7 @@ func opStaticCall(pc *uint64, interpreter *EVMInterpreter, contract *Contract, m
 
 	/**
 	todo 静态调用
-	 */
+	*/
 	ret, returnGas, err := interpreter.evm.StaticCall(contract, toAddr, args, gas)
 	if err != nil {
 		stack.push(interpreter.intPool.getZero())
@@ -856,6 +862,7 @@ func opStaticCall(pc *uint64, interpreter *EVMInterpreter, contract *Contract, m
 	return ret, nil
 }
 
+// 返回处理
 func opReturn(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {
 	offset, size := stack.pop(), stack.pop()
 	ret := memory.GetPtr(offset.Int64(), size.Int64())
@@ -864,6 +871,7 @@ func opReturn(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memor
 	return ret, nil
 }
 
+// 恢复 ？ 归还？
 func opRevert(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {
 	offset, size := stack.pop(), stack.pop()
 	ret := memory.GetPtr(offset.Int64(), size.Int64())
@@ -887,14 +895,19 @@ func opSuicide(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memo
 // following functions are used by the instruction jump  table
 
 // make log instruction function
+//
+// todo evm 的 LOG
 func makeLog(size int) executionFunc {
 	return func(pc *uint64, interpreter *EVMInterpreter, contract *Contract, memory *Memory, stack *Stack) ([]byte, error) {
 		topics := make([]common.Hash, size)
 		mStart, mSize := stack.pop(), stack.pop()
+
+		// todo 根据 size 决定当前 event 支持多少个 topic
 		for i := 0; i < size; i++ {
 			topics[i] = common.BigToHash(stack.pop())
 		}
 
+		// todo  沃日， 从memory中获取 data？  event xxx (topic1, ..., topicN, ...args)
 		d := memory.Get(mStart.Int64(), mSize.Int64())
 		interpreter.evm.StateDB.AddLog(&types.Log{
 			Address: contract.Address(),

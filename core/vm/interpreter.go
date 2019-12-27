@@ -54,7 +54,7 @@ type EVMInterpreter struct {
 	intPool  *intPool
 
 	// todo  是否进行状态修改, 只有 staticCall 进来才会有
-	readOnly   bool   // Whether to throw on stateful modifications
+	readOnly bool // Whether to throw on stateful modifications
 	// todo 上次CALL的返回数据以供后续重用
 	returnData []byte // Last CALL's return data for subsequent reuse
 }
@@ -78,18 +78,18 @@ func NewEVMInterpreter(evm *EVM, cfg Config) *EVMInterpreter {
 
 func (in *EVMInterpreter) enforceRestrictions(op OpCode, operation operation, stack *Stack) error {
 	/*
-	if in.evm.chainRules.IsByzantium {
-		if in.readOnly {
-			// If the interpreter is operating in readonly mode, make sure no
-			// state-modifying operation is performed. The 3rd stack item
-			// for a call operation is the value. Transferring value from one
-			// account to the others means the state is modified and should also
-			// return with an error.
-			if operation.writes || (op == CALL && stack.Back(2).BitLen() > 0) {
-				return errWriteProtection
+		if in.evm.chainRules.IsByzantium {
+			if in.readOnly {
+				// If the interpreter is operating in readonly mode, make sure no
+				// state-modifying operation is performed. The 3rd stack item
+				// for a call operation is the value. Transferring value from one
+				// account to the others means the state is modified and should also
+				// return with an error.
+				if operation.writes || (op == CALL && stack.Back(2).BitLen() > 0) {
+					return errWriteProtection
+				}
 			}
-		}
-	}*/
+		}*/
 	return nil
 }
 
@@ -107,6 +107,44 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (
 			in.intPool = nil
 		}()
 	}
+
+	/**
+	todo 在执行特定的计算之前，处理器会确定下面所说的信息是否有效和是否可获取：
+		- 系统状态
+		- 用于计算的剩余gas
+		- 拥有执行代码的账户地址
+		- 原始触发此次执行的交易发送者的地址
+		- 触发代码执行的账户地址（可能与原始发送者不同）
+		- 触发此次执行的交易gas price
+		- 此次执行的输入数据
+		- Value(单位为Wei)作为当前执行的一部分传递给该账户
+		- 待执行的机器码
+		- 当前区块的区块头
+		- 当前消息通信或合约创建堆栈的深度
+
+	todo 执行刚开始时，内存和堆栈都是空的，程序计数器为 0
+
+	todo  PC: 0 STACK: [] MEM: [], STORAGE: {}
+
+	然后EVM开始递归的执行交易，为每个循环计算系统状态和机器状态。系统状态也就是以太坊的全局状态(global state)。机器状态包含：
+
+	- 可获取的gas
+	- 程序计数器
+	- 内存的内容
+	- 内存中字的活跃数
+	- 堆栈的内容
+	- 堆栈中的项从系列的最左边被删除或者添加。
+
+	每个循环，剩余的gas都会被减少相应的量，程序计数器也会增加。
+	在每个循环的结束，都有三种可能性：
+
+	- 机器到达异常状态（例如 gas不足，无效指令，堆栈项不足，堆栈项会溢出1024，无效的JUMP/JUMPI目的地等等）因此停止，并丢弃所有更改
+	- 进入后续处理下一个循环
+	- 机器到达了受控停止（到达执行过程的终点）
+
+	假设执行没有遇到异常状态，达到一个“可控的”或正常的停止，机器就会产生一个合成状态，执行之后的剩余gas、产生的子状态、以及组合输出。
+
+	*/
 
 	// Increment the call depth which is restricted to 1024
 	in.evm.depth++

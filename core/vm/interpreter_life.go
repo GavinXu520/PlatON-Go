@@ -5,38 +5,38 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"math/big"
+	"reflect"
+	"runtime"
+	"strings"
+
 	"github.com/PlatONnetwork/PlatON-Go/common"
 	"github.com/PlatONnetwork/PlatON-Go/common/math"
 	"github.com/PlatONnetwork/PlatON-Go/core/lru"
 	"github.com/PlatONnetwork/PlatON-Go/life/utils"
 	"github.com/PlatONnetwork/PlatON-Go/log"
 	"github.com/PlatONnetwork/PlatON-Go/rlp"
-	"math/big"
-	"reflect"
-	"runtime"
-	"strings"
 
 	"github.com/PlatONnetwork/PlatON-Go/life/exec"
 	"github.com/PlatONnetwork/PlatON-Go/life/resolver"
 )
 
 var (
-	errReturnInvalidRlpFormat = errors.New("interpreter_life: invalid rlp format.")
+	errReturnInvalidRlpFormat   = errors.New("interpreter_life: invalid rlp format.")
 	errReturnInsufficientParams = errors.New("interpreter_life: invalid input. ele must greater than 2")
-	errReturnInvalidAbi = errors.New("interpreter_life: invalid abi, encoded fail.")
+	errReturnInvalidAbi         = errors.New("interpreter_life: invalid abi, encoded fail.")
 )
 
 const (
 	CALL_CANTRACT_FLAG = 9
 )
 
-
 /**
 默认的 wasm 虚机配置项
- */
+*/
 var DEFAULT_VM_CONFIG = exec.VMConfig{
 	// 是否 即时编译 标识位, 默认为 false： 否
-	EnableJIT:          false,
+	EnableJIT: false,
 
 	// 默认的 内存页数， 16
 	DefaultMemoryPages: exec.DefaultMemoryPages,
@@ -59,7 +59,7 @@ func NewWASMInterpreter(evm *EVM, cfg Config) *WASMInterpreter {
 
 	/**
 	todo 封装了一层 wasm 的state
-	 */
+	*/
 	wasmStateDB := &WasmStateDB{
 		StateDB: evm.StateDB,
 		evm:     evm,
@@ -68,8 +68,8 @@ func NewWASMInterpreter(evm *EVM, cfg Config) *WASMInterpreter {
 
 	// todo 实例化  wasm 的执行器
 	return &WASMInterpreter{
-		evm:         evm,
-		cfg:         cfg,
+		evm: evm,
+		cfg: cfg,
 
 		// todo 实例化了 wasm 自己使用的 log实例，区分开全局的log，不希望造成阻塞
 		WasmLogger:  NewWasmLogger(cfg, log.WasmRoot()),
@@ -79,8 +79,8 @@ func NewWASMInterpreter(evm *EVM, cfg Config) *WASMInterpreter {
 		todo 实例化 wasm 的解析器
 
 		0x01 是clang的解释器
-		 */
-		resolver:    resolver.NewResolver(0x01),
+		*/
+		resolver: resolver.NewResolver(0x01),
 	}
 }
 
@@ -96,14 +96,14 @@ Run循环并使用给定的输入数据评估 contrct的代码并返回.
 
 
 重要的是要注意，解释器返回的任何错误都应被视为“还原并消耗所有气体”操作，但errExecutionReverted除外，这意味着还原并保持“气体销”.
- */
+*/
 func (in *WASMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (ret []byte, err error) {
 
 	// todo 在wasm 中没用 readOnly， 因为 还没用到 staticCall 指令
 
 	/**
 	todo 捕获内部 panic
-	 */
+	*/
 	defer func() {
 		if er := recover(); er != nil {
 			ret, err = nil, fmt.Errorf("VM execute fail：%v", er)
@@ -118,6 +118,7 @@ func (in *WASMInterpreter) Run(contract *Contract, input []byte, readOnly bool) 
 		// todo evm.depth == 0 表示，vm调用结束了
 		if in.evm.depth == 0 {
 			logger, ok := in.WasmLogger.(*WasmLogger)
+
 			if ok {
 				// 清空掉  logger
 				logger.Flush()
@@ -125,14 +126,12 @@ func (in *WASMInterpreter) Run(contract *Contract, input []byte, readOnly bool) 
 		}
 	}()
 
-
 	// 先判断下 wasm 合约的 code
 	// todo 这是在 Call() 中调用了  SetCallCode() 设置的
 	// 		这时候的 Code 还只是 rlp 的 []byte
 	if len(contract.Code) == 0 {
 		return nil, nil
 	}
-
 
 	// 将 Code 解出来
 	// todo 注意 life 版本的 code 中包含两部分， code 和 abi
@@ -144,24 +143,24 @@ func (in *WASMInterpreter) Run(contract *Contract, input []byte, readOnly bool) 
 
 	/**
 	todo 创建 虚机上下文
-	 */
+	*/
 	context := &exec.VMContext{
-		/**
+		/**、。
 		拿，默认的 wasm 配置项
-		 */
-		Config:   DEFAULT_VM_CONFIG,
+		*/
+		Config: DEFAULT_VM_CONFIG,
 
 		// 获取当前 contractAddr
-		Addr:     contract.Address(),
+		Addr: contract.Address(),
 
 		// 该Gas其实就是 tx中给的 gas
 		GasLimit: contract.Gas,
 
 		// 创建 WASM StateDB
-		StateDB:  NewWasmStateDB(in.wasmStateDB, contract),
+		StateDB: NewWasmStateDB(in.wasmStateDB, contract),
 
 		// 使用wasm logger
-		Log:      in.WasmLogger,
+		Log: in.WasmLogger,
 	}
 
 	// todo 一个空的 life VM 实例
@@ -178,7 +177,7 @@ func (in *WASMInterpreter) Run(contract *Contract, input []byte, readOnly bool) 
 		module = &lru.WasmModule{}
 		/**
 		todo 根据 code 解出 对用的 func  和 module
-		 */
+		*/
 		module.Module, module.FunctionCode, err = exec.ParseModuleAndFunc(code, nil)
 		if err != nil {
 			return nil, err
@@ -198,7 +197,7 @@ func (in *WASMInterpreter) Run(contract *Contract, input []byte, readOnly bool) 
 	todo ############################
 	todo ############################
 	todo ############################
-	 */
+	*/
 	lvm, err = exec.NewVirtualMachineWithModule(module.Module, module.FunctionCode, context, in.resolver, nil)
 	if err != nil {
 		return nil, err
@@ -206,7 +205,6 @@ func (in *WASMInterpreter) Run(contract *Contract, input []byte, readOnly bool) 
 	defer func() {
 		lvm.Stop()
 	}()
-
 
 	// todo 将 tx.data 的内容 赋值给 contract 执行上下文
 	contract.Input = input
@@ -222,7 +220,7 @@ func (in *WASMInterpreter) Run(contract *Contract, input []byte, readOnly bool) 
 	/**
 	todo 这里必须要注意： 可以翻看 evm.Create() 和 evm.Call() 的区别
 		可以知道， Create() 中的 input就是个 nil，即： 部署合约的时候 input就是 nil
-	 */
+	*/
 	if input == nil {
 		funcName = "init" // init function.
 	} else {
@@ -253,7 +251,7 @@ func (in *WASMInterpreter) Run(contract *Contract, input []byte, readOnly bool) 
 
 	/**
 	TODO 这里就是真正 run wasm 的入口了
-	 */
+	*/
 	res, err := lvm.RunWithGasLimit(entryID, int(context.GasLimit), params...)
 	if err != nil {
 		fmt.Println("throw exception:", err.Error())
