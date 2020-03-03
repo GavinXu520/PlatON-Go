@@ -18,6 +18,7 @@ package vm
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 	"sync/atomic"
 	"time"
@@ -224,7 +225,7 @@ func (evm *EVM) Call(caller ContractRef, addr common.Address, input []byte, gas 
 	if evm.vmConfig.NoRecursion && evm.depth > 0 {
 		return nil, gas, nil
 	}
-
+	fmt.Println("########################## gas using", "the evm call func", "input gas", gas)
 	// Fail if we're trying to execute above the call depth limit
 	if evm.depth > int(params.CallCreateDepth) {
 		return nil, gas, ErrDepth

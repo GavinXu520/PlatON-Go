@@ -109,7 +109,7 @@ func (engine *wagonEngine) Run(input []byte, readOnly bool) ([]byte, error) {
 	if engine.Contract().DeployContract {
 		return engine.Contract().Code, err
 	}
-
+	fmt.Println("################## gas using", "exec vm codes after, the remian gas:", engine.Contract().Gas)
 	return ret, err
 }
 

@@ -759,10 +759,12 @@ func Transfer(proc *exec.Process, dst uint32, amount uint32, len uint32) int32 {
 	if transfersValue {
 		gas += params.CallValueTransferGas
 	}
-	gasTemp, err := callGasWasm(ctx.contract.Gas, params.TxGas, big.NewInt(int64(params.TxGas)))
+	fmt.Println("####################### gas using", "tramsfer calc remian gas before", "the contract remain gas", ctx.contract.Gas, "base", params.TxGas, "callCost", params.TxGas)
+	gasTemp, err := callGasWasm(ctx.contract.Gas, params.TxGas, new(big.Int).SetUint64(ctx.contract.Gas))
 	if nil != err {
 		panic(err)
 	}
+	fmt.Println("####################### gas using", "tramsfer calc remian gas after", "the res gas", gasTemp)
 	ctx.evm.callGasTemp = gasTemp
 	gas, overflow := imath.SafeAdd(gas, ctx.evm.callGasTemp)
 	if overflow {
@@ -782,7 +784,7 @@ func Transfer(proc *exec.Process, dst uint32, amount uint32, len uint32) int32 {
 	if err != nil {
 		panic(err)
 	}
-	ctx.contract.Gas = returnGas
+	ctx.contract.Gas += returnGas
 	return 0
 }
 
