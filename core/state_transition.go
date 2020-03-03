@@ -19,6 +19,8 @@ package core
 import (
 	"context"
 	"errors"
+	"fmt"
+	"github.com/PlatONnetwork/PlatON-Go/common/hexutil"
 	"math"
 	"math/big"
 	"time"
@@ -107,12 +109,13 @@ func IntrinsicGas(data []byte, contractCreation bool) (uint64, error) {
 			return 0, vm.ErrOutOfGas
 		}
 		gas += nz * noZeroGas
-
+		fmt.Println("################## gas using", "len", nz, "noZeroGas:", nz * noZeroGas)
 		z := uint64(len(data)) - nz
 		if (math.MaxUint64-gas)/zeroGas < z {
 			return 0, vm.ErrOutOfGas
 		}
 		gas += z * zeroGas
+		fmt.Println("################## gas using", "len", z, "zeroGas:", z * zeroGas)
 	}
 	return gas, nil
 }
@@ -198,13 +201,14 @@ func (st *StateTransition) TransitionDb() (ret []byte, usedGas uint64, failed bo
 	msg := st.msg
 	sender := vm.AccountRef(msg.From())
 	contractCreation := msg.To() == nil
-
+	fmt.Println("################## gas using", "origin gas:", st.gas)
+	fmt.Println("################## gas using", "len(input)", len(st.data), "input:", hexutil.Encode(st.data))
 	// Pay intrinsic gas
 	gas, err := IntrinsicGas(st.data, contractCreation)
 	if err != nil {
 		return nil, 0, false, err
 	}
-
+	fmt.Println("################## gas using", "IntrinsicGas:", gas)
 	if err = st.useGas(gas); err != nil {
 		return nil, 0, false, err
 	}
@@ -236,6 +240,7 @@ func (st *StateTransition) TransitionDb() (ret []byte, usedGas uint64, failed bo
 	if contractCreation {
 		ret, _, st.gas, vmerr = evm.Create(sender, st.data, st.gas, st.value)
 	} else {
+		fmt.Println("################## gas using", "exec vm call before, the remian gas:", st.gas)
 		// Increment the nonce for the next transaction
 		st.state.SetNonce(msg.From(), st.state.GetNonce(sender.Address())+1)
 		ret, st.gas, vmerr = evm.Call(sender, st.to(), st.data, st.gas, st.value)

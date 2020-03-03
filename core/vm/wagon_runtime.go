@@ -581,6 +581,7 @@ func checkGas(ctx *VMContext, gas uint64) {
 }
 func GasPrice(proc *exec.Process, gasPrice uint32) uint32 {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "GasPrice", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	value := ctx.evm.GasPrice.Bytes()
 	_, err := proc.WriteAt(value, int64(gasPrice))
@@ -593,6 +594,7 @@ func GasPrice(proc *exec.Process, gasPrice uint32) uint32 {
 
 func BlockHash(proc *exec.Process, num uint64, dst uint32) {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "BlockHash", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	blockHash := ctx.evm.GetHash(num)
 	_, err := proc.WriteAt(blockHash.Bytes(), int64(dst))
@@ -603,30 +605,35 @@ func BlockHash(proc *exec.Process, num uint64, dst uint32) {
 
 func BlockNumber(proc *exec.Process) uint64 {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "BlockNumber", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	return ctx.evm.BlockNumber.Uint64()
 }
 
 func GasLimit(proc *exec.Process) uint64 {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "GasLimit", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	return ctx.evm.GasLimit
 }
 
 func Gas(proc *exec.Process) uint64 {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "Gas", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	return ctx.contract.Gas
 }
 
 func Timestamp(proc *exec.Process) int64 {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "Timestamp", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	return ctx.evm.Time.Int64()
 }
 
 func Coinbase(proc *exec.Process, dst uint32) {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "Coinbase", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	coinBase := ctx.evm.Coinbase
 	_, err := proc.WriteAt(coinBase.Bytes(), int64(dst))
@@ -637,6 +644,7 @@ func Coinbase(proc *exec.Process, dst uint32) {
 
 func Balance(proc *exec.Process, dst uint32, balance uint32) uint32 {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "Balance", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	var addr common.Address
 	_, err := proc.ReadAt(addr[:], int64(dst))
@@ -644,6 +652,7 @@ func Balance(proc *exec.Process, dst uint32, balance uint32) uint32 {
 		panic(err)
 	}
 	value := ctx.evm.StateDB.GetBalance(addr).Bytes()
+	fmt.Println("########################## gas using", "addr", addr.String(), "balance", ctx.evm.StateDB.GetBalance(addr).String())
 	_, err = proc.WriteAt(value, int64(balance))
 	if nil != err {
 		panic(err)
@@ -653,6 +662,7 @@ func Balance(proc *exec.Process, dst uint32, balance uint32) uint32 {
 
 func Origin(proc *exec.Process, dst uint32) {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "Origin", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	_, err := proc.WriteAt(ctx.evm.Origin.Bytes(), int64(dst))
 	if nil != err {
@@ -662,6 +672,7 @@ func Origin(proc *exec.Process, dst uint32) {
 
 func Caller(proc *exec.Process, dst uint32) {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "Caller", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	_, err := proc.WriteAt(ctx.contract.caller.Address().Bytes(), int64(dst))
 	if nil != err {
@@ -672,6 +683,7 @@ func Caller(proc *exec.Process, dst uint32) {
 // define: uint8_t callValue();
 func CallValue(proc *exec.Process, dst uint32) uint32 {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "CallValue", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	value := ctx.contract.value.Bytes()
 	_, err := proc.WriteAt(value, int64(dst))
@@ -684,7 +696,9 @@ func CallValue(proc *exec.Process, dst uint32) uint32 {
 // define: void address(char hash[20]);
 func Address(proc *exec.Process, dst uint32) {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "Address", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
+	fmt.Println("####################### gas using", "contract Addr", ctx.contract.Address().String())
 	_, err := proc.WriteAt(ctx.contract.Address().Bytes(), int64(dst))
 	if nil != err {
 		panic(err)
@@ -694,6 +708,7 @@ func Address(proc *exec.Process, dst uint32) {
 // define: void sha3(char *src, size_t srcLen, char *dest, size_t destLen);
 func Sha3(proc *exec.Process, src uint32, srcLen uint32, dst uint32, dstLen uint32) {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "Sha3", Sha3DataGas*uint64(srcLen))
 	checkGas(ctx, Sha3DataGas*uint64(srcLen))
 
 	data := make([]byte, srcLen)
@@ -713,6 +728,7 @@ func Sha3(proc *exec.Process, src uint32, srcLen uint32, dst uint32, dstLen uint
 
 func CallerNonce(proc *exec.Process) uint64 {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "CallerNonce", CallIndirect)
 	checkGas(ctx, CallIndirect)
 	addr := ctx.contract.Caller()
 	return ctx.evm.StateDB.GetNonce(addr)
@@ -752,6 +768,7 @@ func Transfer(proc *exec.Process, dst uint32, amount uint32, len uint32) int32 {
 	if overflow {
 		panic(errGasUintOverflow)
 	}
+	fmt.Println("####################### gas using the external", "Transfer", gas)
 	checkGas(ctx, gas)
 
 	gas = ctx.evm.callGasTemp
@@ -760,7 +777,7 @@ func Transfer(proc *exec.Process, dst uint32, amount uint32, len uint32) int32 {
 			panic(errGasUintOverflow)
 		}
 	}
-
+	fmt.Println("####################### gas using", "from", ctx.contract.Address().String(), "toAddr",addr.String(), "gas", gas, "val", bValue)
 	_, returnGas, err := ctx.evm.Call(ctx.contract, addr, nil, gas, bValue)
 	if err != nil {
 		panic(err)
@@ -776,6 +793,7 @@ func SetState(proc *exec.Process, key uint32, keyLen uint32, val uint32, valLen 
 	if ctx.readOnly {
 		panic(errWASMWriteProtection)
 	}
+	fmt.Println("####################### gas using the external", "SetState", StoreGas*uint64(keyLen+valLen))
 	checkGas(ctx, StoreGas*uint64(keyLen+valLen))
 	keyBuf := make([]byte, keyLen)
 	_, err := proc.ReadAt(keyBuf, int64(key))
@@ -798,6 +816,7 @@ func GetStateLength(proc *exec.Process, key uint32, keyLen uint32) uint32 {
 		panic(err)
 	}
 	val := ctx.evm.StateDB.GetState(ctx.contract.Address(), keyBuf)
+	fmt.Println("####################### gas using the external", "GetStateLength", StoreLenGas*uint64(len(val)))
 	checkGas(ctx, StoreLenGas*uint64(len(val)))
 
 	return uint32(len(val))
@@ -811,6 +830,7 @@ func GetState(proc *exec.Process, key uint32, keyLen uint32, val uint32, valLen 
 		panic(err)
 	}
 	valBuf := ctx.evm.StateDB.GetState(ctx.contract.Address(), keyBuf)
+	fmt.Println("####################### gas using the external", "GetState", StoreLenGas*uint64(len(valBuf)))
 	checkGas(ctx, StoreLenGas*uint64(len(valBuf)))
 
 	if uint32(len(valBuf)) > valLen {
@@ -826,12 +846,14 @@ func GetState(proc *exec.Process, key uint32, keyLen uint32, val uint32, valLen 
 
 func GetInputLength(proc *exec.Process) uint32 {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "GetInputLength", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	return uint32(len(ctx.Input))
 }
 
 func GetInput(proc *exec.Process, dst uint32) {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "GetInput", ExternalDataGas*uint64(len(ctx.Input)))
 	checkGas(ctx, ExternalDataGas*uint64(len(ctx.Input)))
 	_, err := proc.WriteAt(ctx.Input, int64(dst))
 	if err != nil {
@@ -841,12 +863,14 @@ func GetInput(proc *exec.Process, dst uint32) {
 
 func GetCallOutputLength(proc *exec.Process) uint32 {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "GetCallOutputLength", IndirectCallGas)
 	checkGas(ctx, IndirectCallGas)
 	return uint32(len(ctx.CallOut))
 }
 
 func GetCallOutput(proc *exec.Process, dst uint32) {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "GetCallOutput", ExternalDataGas*uint64(len(ctx.CallOut)))
 	checkGas(ctx, ExternalDataGas*uint64(len(ctx.CallOut)))
 	_, err := proc.WriteAt(ctx.CallOut, int64(dst))
 	if err != nil {
@@ -856,6 +880,7 @@ func GetCallOutput(proc *exec.Process, dst uint32) {
 
 func ReturnContract(proc *exec.Process, dst uint32, len uint32) {
 	ctx := proc.HostCtx().(*VMContext)
+	fmt.Println("####################### gas using the external", "ReturnContract", ExternalDataGas*uint64(len))
 	checkGas(ctx, ExternalDataGas*uint64(len))
 	ctx.Output = make([]byte, len)
 	_, err := proc.ReadAt(ctx.Output, int64(dst))
@@ -943,6 +968,7 @@ func CallContract(proc *exec.Process, addrPtr, args, argsLen, val, valLen, callC
 	if overflow {
 		panic(errGasUintOverflow)
 	}
+	fmt.Println("####################### gas using the external", "CallContract", gas)
 	checkGas(ctx, gas)
 
 	gas = ctx.evm.callGasTemp
@@ -1002,6 +1028,7 @@ func DelegateCallContract(proc *exec.Process, addrPtr, params, paramsLen, callCo
 	if overflow {
 		panic(errGasUintOverflow)
 	}
+	fmt.Println("####################### gas using the external", "DelegateCallContract", gas)
 	checkGas(ctx, gas)
 
 	gas = ctx.evm.callGasTemp
@@ -1056,6 +1083,7 @@ func StaticCallContract(proc *exec.Process, addrPtr, params, paramsLen, callCost
 	if overflow {
 		panic(errGasUintOverflow)
 	}
+	fmt.Println("####################### gas using the external", "StaticCallContract", gas)
 	checkGas(ctx, gas)
 
 	gas = ctx.evm.callGasTemp
@@ -1095,6 +1123,7 @@ func DestroyContract(proc *exec.Process, addrPtr uint32) int32 {
 	if !ctx.evm.StateDB.HasSuicided(ctx.contract.Address()) {
 		ctx.evm.StateDB.AddRefund(params.SuicideRefundGas)
 	}
+	fmt.Println("####################### gas using the external", "DestroyContract", gas)
 	checkGas(ctx, gas)
 
 	balance := ctx.evm.StateDB.GetBalance(contractAddr)
@@ -1167,6 +1196,7 @@ func MigrateContract(proc *exec.Process, newAddr, args, argsLen, val, valLen, ca
 	if overflow {
 		panic(errGasUintOverflow)
 	}
+	fmt.Println("####################### gas using the external", "MigrateContract", gas)
 	checkGas(ctx, gas)
 	gas = ctx.evm.callGasTemp
 
@@ -1328,6 +1358,7 @@ func EmitEvent(proc *exec.Process, indexesPtr, indexesLen, args, argsLen uint32)
 	if nil != err {
 		panic(err)
 	}
+	fmt.Println("####################### gas using the external", "EmitEvent", gas)
 	checkGas(ctx, gas)
 
 	bn := ctx.evm.BlockNumber.Uint64()

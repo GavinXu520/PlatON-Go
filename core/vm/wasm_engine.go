@@ -2,6 +2,7 @@ package vm
 
 import (
 	"context"
+	"fmt"
 	"hash/fnv"
 
 	"github.com/PlatONnetwork/PlatON-Go/log"
@@ -102,7 +103,7 @@ func (engine *wagonEngine) Run(input []byte, readOnly bool) ([]byte, error) {
 		// shutdown vm, change the vm.abort mark
 		engine.vm.Close()
 	}(engine.evm.Ctx)
-
+	fmt.Println("################## gas using", "exec vm codes before, the remian gas:", engine.Contract().Gas)
 	//exec vm
 	ret, err := engine.exec(entryIndex)
 	if engine.Contract().DeployContract {
@@ -129,7 +130,13 @@ func (engine *wagonEngine) prepare(module *exec.CompiledModule, input []byte) er
 	vm.SetHostCtx(ctx)
 	vm.SetUseGas(func(b byte) {
 		gas := WasmGasCostTable[b]
+		if gas > uint64(3) {
+			fmt.Println("############ gas using", "the code gas large than 3:", b, "gas", gas)
+		}else {
+			fmt.Println("############ gas using", "executing vm code", b, "gas", gas)
+		}
 		if !ctx.contract.UseGas(gas) {
+			fmt.Println("############ gas using", "get out executing vm code", b, "gas", gas)
 			panic(ErrOutOfGas)
 		}
 	})
