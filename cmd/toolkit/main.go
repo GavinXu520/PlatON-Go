@@ -20,6 +20,7 @@ func init() {
 		kit.ScanAccountCmd,
 		kit.GetValueCmd,
 		kit.AccountState,
+		kit.DelAccountState,
 	}
 	sort.Sort(cli.CommandsByName(app.Commands))
 	app.After = func(ctx *cli.Context) error {
