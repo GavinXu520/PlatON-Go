@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	"github.com/PlatONnetwork/PlatON-Go/common"
-	"github.com/PlatONnetwork/PlatON-Go/life/compiler"
 	"github.com/PlatONnetwork/PlatON-Go/log"
 	"github.com/hashicorp/golang-lru/simplelru"
 	"github.com/syndtr/goleveldb/leveldb"
@@ -26,8 +25,6 @@ type WasmLDBCache struct {
 }
 
 type WasmModule struct {
-	Module       *compiler.Module
-	FunctionCode []compiler.InterpreterCode
 }
 
 func WasmCache() *WasmLDBCache {

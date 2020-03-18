@@ -1,0 +1,28 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getCount",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "count",
+                "type": "uint64"
+            }
+        ],
+        "name": "setCount",
+        "output": "void",
+        "type": "Action"
+    }
+]

@@ -1,0 +1,66 @@
+[
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "int8"
+            }
+        ],
+        "name": "setChar",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "string"
+            }
+        ],
+        "name": "setString",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getString",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "bool"
+            }
+        ],
+        "name": "setBool",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getBool",
+        "output": "bool",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getChar",
+        "output": "int8",
+        "type": "Action"
+    }
+]

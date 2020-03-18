@@ -1,0 +1,21 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint64"
+            }
+        ],
+        "name": "getArea",
+        "output": "uint32",
+        "type": "Action"
+    }
+]

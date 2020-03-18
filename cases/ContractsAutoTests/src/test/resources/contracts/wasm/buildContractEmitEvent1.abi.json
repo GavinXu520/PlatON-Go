@@ -1,0 +1,177 @@
+[
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint32"
+            }
+        ],
+        "name": "one_emit_event1",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "input": [
+            {
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "name": "arg9",
+                "type": "uint32"
+            },
+            {
+                "name": "arg8",
+                "type": "string"
+            },
+            {
+                "name": "arg7",
+                "type": "string"
+            },
+            {
+                "name": "arg6",
+                "type": "string"
+            },
+            {
+                "name": "arg5",
+                "type": "string"
+            },
+            {
+                "name": "arg4",
+                "type": "string"
+            },
+            {
+                "name": "arg3",
+                "type": "uint32"
+            },
+            {
+                "name": "arg2",
+                "type": "uint32"
+            },
+            {
+                "name": "arg1",
+                "type": "string"
+            }
+        ],
+        "name": "transfer3",
+        "topic": 1,
+        "type": "Event"
+    },
+    {
+        "input": [
+            {
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "name": "arg1",
+                "type": "uint32"
+            }
+        ],
+        "name": "transfer",
+        "topic": 1,
+        "type": "Event"
+    },
+    {
+        "input": [
+            {
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "name": "arg2",
+                "type": "uint32"
+            },
+            {
+                "name": "arg1",
+                "type": "string"
+            }
+        ],
+        "name": "transfer2",
+        "topic": 1,
+        "type": "Event"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint32"
+            }
+        ],
+        "name": "one_emit_event1_args2",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint32"
+            },
+            {
+                "name": "name1",
+                "type": "string"
+            },
+            {
+                "name": "name2",
+                "type": "string"
+            },
+            {
+                "name": "name3",
+                "type": "string"
+            },
+            {
+                "name": "name4",
+                "type": "string"
+            },
+            {
+                "name": "name5",
+                "type": "string"
+            },
+            {
+                "name": "value2",
+                "type": "uint32"
+            },
+            {
+                "name": "value3",
+                "type": "uint32"
+            },
+            {
+                "name": "name6",
+                "type": "string"
+            }
+        ],
+        "name": "one_emit_event1_args9",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_string",
+        "output": "string",
+        "type": "Action"
+    }
+]

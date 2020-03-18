@@ -1,0 +1,16 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getmalloc",
+        "output": "string",
+        "type": "Action"
+    }
+]

@@ -1,0 +1,46 @@
+[
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "key",
+                "type": "string"
+            }
+        ],
+        "name": "get_map",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "key",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "string"
+            }
+        ],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "key",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "string"
+            }
+        ],
+        "name": "set_map",
+        "output": "void",
+        "type": "Action"
+    }
+]

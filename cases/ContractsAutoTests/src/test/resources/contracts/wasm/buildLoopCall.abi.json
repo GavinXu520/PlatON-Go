@@ -1,0 +1,28 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "n",
+                "type": "uint64"
+            }
+        ],
+        "name": "loopCallTest",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_sum",
+        "output": "uint64",
+        "type": "Action"
+    }
+]

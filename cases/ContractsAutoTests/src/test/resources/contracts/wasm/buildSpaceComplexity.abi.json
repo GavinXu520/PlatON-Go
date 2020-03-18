@@ -1,0 +1,36 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "arr",
+                "type": "int8[10]"
+            },
+            {
+                "name": "start",
+                "type": "int8"
+            },
+            {
+                "name": "last",
+                "type": "int8"
+            }
+        ],
+        "name": "sort",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_array",
+        "output": "int8[10]",
+        "type": "Action"
+    }
+]

@@ -1,0 +1,44 @@
+[
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "init_name",
+                "type": "string"
+            }
+        ],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "baseclass": [],
+        "fields": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "name": "Person",
+        "type": "struct"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "one_person",
+                "type": "Person"
+            }
+        ],
+        "name": "add_person",
+        "output": "Person[]",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_person",
+        "output": "Person[]",
+        "type": "Action"
+    }
+]

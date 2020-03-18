@@ -1,0 +1,16 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_platon_origin",
+        "output": "string",
+        "type": "Action"
+    }
+]

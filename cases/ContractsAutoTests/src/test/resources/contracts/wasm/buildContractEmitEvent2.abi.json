@@ -1,0 +1,118 @@
+[
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "nationality",
+                "type": "string"
+            },
+            {
+                "name": "value1",
+                "type": "uint32"
+            },
+            {
+                "name": "value2",
+                "type": "uint32"
+            },
+            {
+                "name": "name1",
+                "type": "string"
+            },
+            {
+                "name": "name2",
+                "type": "string"
+            }
+        ],
+        "name": "two_emit_event2_args4",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "input": [
+            {
+                "name": "topic1",
+                "type": "string"
+            },
+            {
+                "name": "topic2",
+                "type": "string"
+            },
+            {
+                "name": "arg1",
+                "type": "uint32"
+            }
+        ],
+        "name": "transfer",
+        "topic": 2,
+        "type": "Event"
+    },
+    {
+        "input": [
+            {
+                "name": "topic1",
+                "type": "string"
+            },
+            {
+                "name": "topic2",
+                "type": "string"
+            },
+            {
+                "name": "arg4",
+                "type": "uint32"
+            },
+            {
+                "name": "arg3",
+                "type": "uint32"
+            },
+            {
+                "name": "arg2",
+                "type": "string"
+            },
+            {
+                "name": "arg1",
+                "type": "string"
+            }
+        ],
+        "name": "transfer2",
+        "topic": 2,
+        "type": "Event"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "nationality",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint32"
+            }
+        ],
+        "name": "two_emit_event2",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_string",
+        "output": "string",
+        "type": "Action"
+    }
+]

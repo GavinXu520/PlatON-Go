@@ -1,0 +1,39 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "my_name",
+                "type": "string"
+            },
+            {
+                "name": "my_age",
+                "type": "uint64"
+            }
+        ],
+        "name": "setStructPersonA",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "setStructPersonB",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getPersonName",
+        "output": "string",
+        "type": "Action"
+    }
+]

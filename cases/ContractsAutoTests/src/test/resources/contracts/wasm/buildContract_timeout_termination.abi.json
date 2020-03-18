@@ -1,0 +1,32 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            }
+        ],
+        "name": "forfunction",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_string_storage",
+        "output": "string",
+        "type": "Action"
+    }
+]

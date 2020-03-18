@@ -1,0 +1,61 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "a",
+                "type": "int8"
+            },
+            {
+                "name": "b",
+                "type": "int16"
+            },
+            {
+                "name": "c",
+                "type": "int32"
+            },
+            {
+                "name": "d",
+                "type": "uint8"
+            }
+        ],
+        "name": "setStorageInt",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getStorageInt8",
+        "output": "int8",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getStorageInt32",
+        "output": "int32",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getStorageUint8",
+        "output": "uint8",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getStorageInt16",
+        "output": "int16",
+        "type": "Action"
+    }
+]

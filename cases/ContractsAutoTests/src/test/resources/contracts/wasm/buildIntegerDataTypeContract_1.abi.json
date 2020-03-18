@@ -1,0 +1,90 @@
+[
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint64"
+            }
+        ],
+        "name": "u128t",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "int8",
+        "output": "int16",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "int32",
+        "output": "int32",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "int64",
+        "output": "int64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint8"
+            }
+        ],
+        "name": "uint8t",
+        "output": "uint8",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint32"
+            }
+        ],
+        "name": "uint32t",
+        "output": "uint32",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint64"
+            }
+        ],
+        "name": "uint64t",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint64"
+            }
+        ],
+        "name": "u256t",
+        "output": "string",
+        "type": "Action"
+    }
+]

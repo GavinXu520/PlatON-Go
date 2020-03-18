@@ -1,0 +1,23 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getBlockNumber",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getTimestamp",
+        "output": "int64",
+        "type": "Action"
+    }
+]

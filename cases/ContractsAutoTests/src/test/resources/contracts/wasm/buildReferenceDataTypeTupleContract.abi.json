@@ -1,0 +1,91 @@
+[
+    {
+        "baseclass": [],
+        "fields": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "age",
+                "type": "uint64"
+            }
+        ],
+        "name": "person",
+        "type": "struct"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getTupleValueIndex4",
+        "output": "person",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getTupleValueIndex1",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "setInitTupleModeOne",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getTupleValueIndex2",
+        "output": "uint8",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "a",
+                "type": "string"
+            },
+            {
+                "name": "b",
+                "type": "uint8"
+            }
+        ],
+        "name": "setInitTupleModeTwo",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getTupleValueIndex3",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "age",
+                "type": "uint64"
+            }
+        ],
+        "name": "setInitTupleModeThree",
+        "output": "void",
+        "type": "Action"
+    }
+]

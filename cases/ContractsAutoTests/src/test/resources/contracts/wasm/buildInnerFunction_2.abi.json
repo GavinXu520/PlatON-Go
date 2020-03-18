@@ -1,0 +1,89 @@
+[
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "str",
+                "type": "string"
+            }
+        ],
+        "name": "sha3",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "value",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "rreturn",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "addr",
+                "type": "string"
+            },
+            {
+                "name": "amount",
+                "type": "uint64"
+            }
+        ],
+        "name": "transfer",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "panic",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "flag",
+                "type": "int64"
+            }
+        ],
+        "name": "revert",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "addr",
+                "type": "string"
+            }
+        ],
+        "name": "destroy",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "origin",
+        "output": "string",
+        "type": "Action"
+    }
+]

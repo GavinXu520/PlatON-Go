@@ -1,0 +1,21 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "n",
+                "type": "uint64"
+            }
+        ],
+        "name": "call",
+        "output": "void",
+        "type": "Action"
+    }
+]

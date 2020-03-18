@@ -1,0 +1,80 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "baseclass": [],
+        "fields": [
+            {
+                "name": "head",
+                "type": "string"
+            }
+        ],
+        "name": "message",
+        "type": "struct"
+    },
+    {
+        "baseclass": [
+            "message"
+        ],
+        "fields": [
+            {
+                "name": "body",
+                "type": "string"
+            },
+            {
+                "name": "end",
+                "type": "string"
+            }
+        ],
+        "name": "my_message",
+        "type": "struct"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "one_message",
+                "type": "my_message"
+            }
+        ],
+        "name": "add_my_message",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_my_message_size",
+        "output": "uint8",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "index",
+                "type": "uint8"
+            }
+        ],
+        "name": "get_my_message_head",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "index",
+                "type": "uint8"
+            }
+        ],
+        "name": "get_my_message_body",
+        "output": "string",
+        "type": "Action"
+    }
+]

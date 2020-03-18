@@ -1,0 +1,57 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "target_addr",
+                "type": "string"
+            },
+            {
+                "name": "in",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "cross_call_ppos_send",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "target_addr",
+                "type": "string"
+            },
+            {
+                "name": "in",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "cross_call_ppos_query",
+        "output": "string",
+        "type": "Action"
+    }
+]

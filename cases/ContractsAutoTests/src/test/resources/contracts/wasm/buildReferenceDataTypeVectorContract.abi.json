@@ -1,0 +1,58 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getClothesColorLength",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "baseclass": [],
+        "fields": [
+            {
+                "name": "color",
+                "type": "string"
+            }
+        ],
+        "name": "clothes",
+        "type": "struct"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "myClothes",
+                "type": "clothes"
+            }
+        ],
+        "name": "setClothesColorOne",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "my_color",
+                "type": "string"
+            }
+        ],
+        "name": "setClothesColorTwo",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getClothesColorIndex",
+        "output": "string",
+        "type": "Action"
+    }
+]

@@ -1,0 +1,70 @@
+[
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "key",
+                "type": "uint8"
+            },
+            {
+                "name": "value",
+                "type": "string"
+            }
+        ],
+        "name": "insertMapUint",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "clearMapUint",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getMapIsEmpty",
+        "output": "bool",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "n",
+                "type": "uint8"
+            }
+        ],
+        "name": "addMapByUint",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getMapBySize",
+        "output": "uint8",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "key",
+                "type": "uint8"
+            }
+        ],
+        "name": "deleteMapByIndex",
+        "output": "void",
+        "type": "Action"
+    }
+]

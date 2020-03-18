@@ -1,0 +1,88 @@
+[
+    {
+        "baseclass": [],
+        "fields": [
+            {
+                "name": "head",
+                "type": "string"
+            }
+        ],
+        "name": "message",
+        "type": "struct"
+    },
+    {
+        "baseclass": [
+            "message"
+        ],
+        "fields": [
+            {
+                "name": "body",
+                "type": "string"
+            },
+            {
+                "name": "end",
+                "type": "string"
+            }
+        ],
+        "name": "my_message",
+        "type": "struct"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "name": "get_message",
+        "output": "my_message[]",
+        "type": "Action"
+    },
+    {
+        "anonymous": false,
+        "input": [
+            {
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "name": "arg2",
+                "type": "string"
+            },
+            {
+                "name": "arg1",
+                "type": "uint32"
+            }
+        ],
+        "name": "hello_event",
+        "topic": 1,
+        "type": "Event"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "one_message",
+                "type": "my_message"
+            }
+        ],
+        "name": "add_message",
+        "output": "my_message[]",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_vector_size",
+        "output": "uint64",
+        "type": "Action"
+    }
+]

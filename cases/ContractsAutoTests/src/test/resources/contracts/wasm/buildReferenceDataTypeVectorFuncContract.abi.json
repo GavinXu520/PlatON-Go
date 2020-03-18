@@ -1,0 +1,98 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "num",
+                "type": "uint64"
+            },
+            {
+                "name": "my_value",
+                "type": "string"
+            }
+        ],
+        "name": "insertVectorMangValue",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getVectorLength",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "index",
+                "type": "uint64"
+            }
+        ],
+        "name": "findVectorAt",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "my_value",
+                "type": "string"
+            }
+        ],
+        "name": "insertVectorValue",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "findVectorFront",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "deleteVectorPopBack",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "findVectorBack",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "deleteVectorErase",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "deleteVectorClear",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "findVectorEmpty",
+        "output": "bool",
+        "type": "Action"
+    }
+]

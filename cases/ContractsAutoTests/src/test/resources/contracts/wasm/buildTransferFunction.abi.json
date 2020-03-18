@@ -1,0 +1,33 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "addr",
+                "type": "uint8[]"
+            }
+        ],
+        "name": "get_Balance",
+        "output": "uint8",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "addr",
+                "type": "uint8[]"
+            }
+        ],
+        "name": "get_platon_transfer",
+        "output": "int32",
+        "type": "Action"
+    }
+]

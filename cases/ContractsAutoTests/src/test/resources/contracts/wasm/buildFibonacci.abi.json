@@ -1,0 +1,52 @@
+[
+    {
+        "input": [
+            {
+                "name": "arg3",
+                "type": "string"
+            },
+            {
+                "name": "arg2",
+                "type": "uint64"
+            },
+            {
+                "name": "arg1",
+                "type": "uint64"
+            }
+        ],
+        "name": "notify",
+        "topic": 0,
+        "type": "Event"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "number",
+                "type": "uint64"
+            }
+        ],
+        "name": "fibonacci_notify",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "number",
+                "type": "uint64"
+            }
+        ],
+        "name": "fibonacci_call",
+        "output": "uint64",
+        "type": "Action"
+    }
+]

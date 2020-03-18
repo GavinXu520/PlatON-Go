@@ -1,0 +1,169 @@
+[
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "in",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "cross_call_bn256Pairing",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "in",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "cross_call_ecrecover",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "in",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "cross_call_sha256hash",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "in",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "cross_call_ripemd160hash",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "in",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "cross_call_dataCopy",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "in",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "cross_call_bigModExp",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "in",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "cross_call_bn256Add",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "in",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "cross_call_bn256ScalarMul",
+        "output": "string",
+        "type": "Action"
+    }
+]

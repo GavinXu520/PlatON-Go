@@ -1,0 +1,63 @@
+[
+    {
+        "input": [
+            {
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "name": "arg1",
+                "type": "string"
+            }
+        ],
+        "name": "transfer",
+        "topic": 1,
+        "type": "Event"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "init_arg",
+                "type": "uint8[]"
+            },
+            {
+                "name": "transfer_value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas_value",
+                "type": "uint64"
+            }
+        ],
+        "name": "migrate_contract",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_string",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "one_name",
+                "type": "string"
+            }
+        ],
+        "name": "set_string",
+        "output": "void",
+        "type": "Action"
+    }
+]

@@ -1,0 +1,64 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "baseclass": [],
+        "fields": [
+            {
+                "name": "head",
+                "type": "string"
+            }
+        ],
+        "name": "message",
+        "type": "struct"
+    },
+    {
+        "baseclass": [
+            "message"
+        ],
+        "fields": [
+            {
+                "name": "body",
+                "type": "string"
+            },
+            {
+                "name": "end",
+                "type": "string"
+            }
+        ],
+        "name": "my_message",
+        "type": "struct"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "target_address",
+                "type": "string"
+            },
+            {
+                "name": "one_message",
+                "type": "my_message"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "delegate_call_add_message",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_vector_size",
+        "output": "uint64",
+        "type": "Action"
+    }
+]

@@ -1,0 +1,40 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "target_address",
+                "type": "string"
+            },
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas",
+                "type": "uint64"
+            }
+        ],
+        "name": "call_set_string",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_string",
+        "output": "string",
+        "type": "Action"
+    }
+]

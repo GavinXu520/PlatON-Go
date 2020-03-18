@@ -1,0 +1,54 @@
+[
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "index",
+                "type": "uint32"
+            }
+        ],
+        "name": "getBytesArrayIndex",
+        "output": "uint8",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getArrayUintSize",
+        "output": "uint8",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "setInitArray",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "index",
+                "type": "uint32"
+            }
+        ],
+        "name": "getArrayStringIndex",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "setBytesArray",
+        "output": "void",
+        "type": "Action"
+    }
+]

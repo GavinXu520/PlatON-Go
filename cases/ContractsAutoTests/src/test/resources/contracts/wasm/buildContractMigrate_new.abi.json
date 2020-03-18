@@ -1,0 +1,71 @@
+[
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint16"
+            }
+        ],
+        "name": "setUint16",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "input": [
+            {
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "name": "arg1",
+                "type": "string"
+            }
+        ],
+        "name": "transfer",
+        "topic": 1,
+        "type": "Event"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint8"
+            },
+            {
+                "name": "input2",
+                "type": "uint16"
+            }
+        ],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint8"
+            }
+        ],
+        "name": "setUint8New",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getUint8New",
+        "output": "uint8",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getUint16",
+        "output": "uint16",
+        "type": "Action"
+    }
+]

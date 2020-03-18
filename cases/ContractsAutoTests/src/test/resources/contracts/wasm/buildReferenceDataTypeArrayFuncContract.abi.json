@@ -1,0 +1,54 @@
+[
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "str",
+                "type": "string"
+            }
+        ],
+        "name": "setArrayFill",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "setInitArrayDate",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getArrayIsEmpty",
+        "output": "bool",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "index",
+                "type": "uint32"
+            }
+        ],
+        "name": "getArrayValueIndex",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getArrayFirstValue",
+        "output": "string",
+        "type": "Action"
+    }
+]

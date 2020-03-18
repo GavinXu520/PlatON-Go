@@ -1,0 +1,60 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "myGroupName",
+                "type": "string"
+            },
+            {
+                "name": "myGroupId",
+                "type": "uint64"
+            }
+        ],
+        "name": "setGroupValue",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getGroupName",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "oneValue",
+                "type": "string"
+            },
+            {
+                "name": "twoValue",
+                "type": "string"
+            }
+        ],
+        "name": "setGroupArrayValue",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "index",
+                "type": "uint32"
+            }
+        ],
+        "name": "getGroupArrayIndexValue",
+        "output": "string",
+        "type": "Action"
+    }
+]

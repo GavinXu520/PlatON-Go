@@ -1,0 +1,44 @@
+[
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "CurrentPage",
+                "type": "uint64"
+            },
+            {
+                "name": "PageMaxSize",
+                "type": "uint64"
+            }
+        ],
+        "name": "getPagingQuery",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "my_value",
+                "type": "string"
+            }
+        ],
+        "name": "insertVectorValue",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getVectorSize",
+        "output": "uint64",
+        "type": "Action"
+    }
+]

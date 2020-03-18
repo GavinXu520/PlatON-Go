@@ -1,0 +1,55 @@
+[
+    {
+        "constant": true,
+        "input": [],
+        "name": "getMultiIndexCbegin",
+        "output": "bool",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "deleteMultiIndexErase",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "my_name",
+                "type": "string"
+            },
+            {
+                "name": "my_age",
+                "type": "uint8"
+            },
+            {
+                "name": "my_sex",
+                "type": "uint8"
+            }
+        ],
+        "name": "addInitMultiIndex",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "my_age",
+                "type": "uint8"
+            }
+        ],
+        "name": "getMultiIndexFind",
+        "output": "uint8",
+        "type": "Action"
+    }
+]

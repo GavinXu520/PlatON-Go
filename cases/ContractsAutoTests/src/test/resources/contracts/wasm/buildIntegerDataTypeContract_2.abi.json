@@ -1,0 +1,123 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getInt8",
+        "output": "int8",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "int8"
+            }
+        ],
+        "name": "setInt8",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "int32"
+            }
+        ],
+        "name": "setInt32",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getInt32",
+        "output": "int32",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "int64"
+            }
+        ],
+        "name": "setInt64",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getInt64",
+        "output": "int64",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint8"
+            }
+        ],
+        "name": "setUint8",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getUint8",
+        "output": "uint8",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint32"
+            }
+        ],
+        "name": "setUint32",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getUint32",
+        "output": "uint32",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "input",
+                "type": "uint64"
+            }
+        ],
+        "name": "setUint64",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getUint64",
+        "output": "uint64",
+        "type": "Action"
+    }
+]

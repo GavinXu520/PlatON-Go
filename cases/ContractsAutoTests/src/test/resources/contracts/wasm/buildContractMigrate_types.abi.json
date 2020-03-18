@@ -1,0 +1,126 @@
+[
+    {
+        "baseclass": [],
+        "fields": [
+            {
+                "name": "head",
+                "type": "string"
+            }
+        ],
+        "name": "message",
+        "type": "struct"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "msg",
+                "type": "message"
+            }
+        ],
+        "name": "setMessage",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "input": [
+            {
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "name": "arg1",
+                "type": "string"
+            }
+        ],
+        "name": "transfer",
+        "topic": 1,
+        "type": "Event"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "init_arg",
+                "type": "uint8[]"
+            },
+            {
+                "name": "transfer_value",
+                "type": "uint64"
+            },
+            {
+                "name": "gas_value",
+                "type": "uint64"
+            }
+        ],
+        "name": "migrate_contract",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getMessage",
+        "output": "message",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "element",
+                "type": "uint16"
+            }
+        ],
+        "name": "pushVector",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "index",
+                "type": "uint64"
+            }
+        ],
+        "name": "getVectorElement",
+        "output": "uint16",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "key",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "string"
+            }
+        ],
+        "name": "setMap",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "key",
+                "type": "string"
+            }
+        ],
+        "name": "getMapElement",
+        "output": "string",
+        "type": "Action"
+    }
+]

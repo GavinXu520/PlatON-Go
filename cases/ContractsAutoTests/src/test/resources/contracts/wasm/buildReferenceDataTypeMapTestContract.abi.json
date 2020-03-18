@@ -1,0 +1,101 @@
+[
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "one_key",
+                "type": "string"
+            },
+            {
+                "name": "one_value",
+                "type": "string"
+            }
+        ],
+        "name": "addMapString",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "setMapKeyType",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getMapStringSize",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "key",
+                "type": "string"
+            }
+        ],
+        "name": "getMapValueByString",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "baseclass": [],
+        "fields": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "age",
+                "type": "uint64"
+            }
+        ],
+        "name": "Person",
+        "type": "struct"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "key",
+                "type": "uint8"
+            },
+            {
+                "name": "person",
+                "type": "Person"
+            }
+        ],
+        "name": "addMapByPerson",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getMapByPersonSize",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "key",
+                "type": "uint8"
+            }
+        ],
+        "name": "getMapByPerson",
+        "output": "string",
+        "type": "Action"
+    }
+]

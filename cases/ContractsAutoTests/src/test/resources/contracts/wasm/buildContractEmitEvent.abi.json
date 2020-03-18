@@ -1,0 +1,101 @@
+[
+    {
+        "input": [
+            {
+                "name": "arg1",
+                "type": "string"
+            }
+        ],
+        "name": "transfer",
+        "topic": 0,
+        "type": "Event"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "name": "zero_emit_event",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "input": [
+            {
+                "name": "arg2",
+                "type": "string"
+            },
+            {
+                "name": "arg1",
+                "type": "string"
+            }
+        ],
+        "name": "transfer2",
+        "topic": 0,
+        "type": "Event"
+    },
+    {
+        "input": [
+            {
+                "name": "arg3",
+                "type": "string"
+            },
+            {
+                "name": "arg2",
+                "type": "string"
+            },
+            {
+                "name": "arg1",
+                "type": "uint32"
+            }
+        ],
+        "name": "transfer3",
+        "topic": 0,
+        "type": "Event"
+    },
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "name": "zero_emit_event_args2",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "uint32"
+            }
+        ],
+        "name": "zero_emit_event_args3",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_string",
+        "output": "string",
+        "type": "Action"
+    }
+]

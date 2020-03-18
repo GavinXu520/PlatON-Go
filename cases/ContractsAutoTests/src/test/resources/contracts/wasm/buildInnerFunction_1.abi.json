@@ -1,0 +1,54 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "gas",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "nonce",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "bn",
+                "type": "uint64"
+            }
+        ],
+        "name": "block_hash",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "coinbase",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "addr",
+                "type": "string"
+            }
+        ],
+        "name": "balanceOf",
+        "output": "string",
+        "type": "Action"
+    }
+]

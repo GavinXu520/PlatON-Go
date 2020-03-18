@@ -1,0 +1,44 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "one_name",
+                "type": "string"
+            },
+            {
+                "name": "one_age",
+                "type": "uint64"
+            }
+        ],
+        "name": "add_vector",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_vector_size",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "index",
+                "type": "uint8"
+            }
+        ],
+        "name": "get_vector",
+        "output": "string",
+        "type": "Action"
+    }
+]

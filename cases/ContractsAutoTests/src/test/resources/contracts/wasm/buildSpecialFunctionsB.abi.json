@@ -1,0 +1,30 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getPlatONGas",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getPlatONGasLimit",
+        "output": "uint64",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "getPlatONGasPrice",
+        "output": "string",
+        "type": "Action"
+    }
+]

@@ -1,0 +1,97 @@
+[
+    {
+        "constant": false,
+        "input": [],
+        "name": "init",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "baseclass": [],
+        "fields": [
+            {
+                "name": "head",
+                "type": "string"
+            }
+        ],
+        "name": "message",
+        "type": "struct"
+    },
+    {
+        "baseclass": [
+            "message"
+        ],
+        "fields": [
+            {
+                "name": "body",
+                "type": "string"
+            },
+            {
+                "name": "end",
+                "type": "string"
+            }
+        ],
+        "name": "my_message",
+        "type": "struct"
+    },
+    {
+        "baseclass": [
+            "my_message"
+        ],
+        "fields": [
+            {
+                "name": "from",
+                "type": "string"
+            },
+            {
+                "name": "to",
+                "type": "string"
+            }
+        ],
+        "name": "sub_my_message",
+        "type": "struct"
+    },
+    {
+        "constant": false,
+        "input": [
+            {
+                "name": "sub_one_message",
+                "type": "sub_my_message"
+            }
+        ],
+        "name": "add_sub_my_message",
+        "output": "void",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [],
+        "name": "get_sub_my_message_size",
+        "output": "uint8",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "index",
+                "type": "uint8"
+            }
+        ],
+        "name": "get_sub_my_message_head",
+        "output": "string",
+        "type": "Action"
+    },
+    {
+        "constant": true,
+        "input": [
+            {
+                "name": "index",
+                "type": "uint8"
+            }
+        ],
+        "name": "get_sub_my_message_from",
+        "output": "string",
+        "type": "Action"
+    }
+]
