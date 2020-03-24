@@ -289,7 +289,7 @@ func (self *stateObject) GetCommittedState(db Database, key string) []byte {
 	valueKey := common.Hash{}
 	// If we have the original value cached, return that
 	if value := self.getCommittedStateCache(key); value != nil {
-		log.Info("GetCommittedState cache", "key", hex.EncodeToString([]byte(key)), "value", len(value))
+		log.Trace("GetCommittedState cache", "key", hex.EncodeToString([]byte(key)), "value", len(value))
 		return value
 	}
 
@@ -314,13 +314,12 @@ func (self *stateObject) GetCommittedState(db Database, key string) []byte {
 	}
 
 	if valueKey != emptyStorage && len(value) == 0 {
-		//log.Error("invalid storage valuekey", "key", hex.EncodeToString([]byte(key)), "valueKey", valueKey.String())
 		return []byte{}
 	}
 	if len(value) == 0 && valueKey == emptyStorage {
-		log.Debug("empty storage valuekey", "key", hex.EncodeToString([]byte(key)), "valueKey", valueKey.String())
+		log.Trace("Empty storage valuekey", "key", hex.EncodeToString([]byte(key)), "valueKey", valueKey.String())
 	}
-	log.Info("GetCommittedState", "key", hex.EncodeToString([]byte(key)), "valueKey", valueKey.String(), "value", len(value))
+	log.Trace("GetCommittedState", "key", hex.EncodeToString([]byte(key)), "valueKey", valueKey.String(), "value", len(value))
 	self.originStorage[key] = valueKey
 	self.originValueStorage[valueKey] = value
 	return value
