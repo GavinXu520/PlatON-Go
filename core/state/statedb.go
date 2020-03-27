@@ -19,6 +19,7 @@ package state
 
 import (
 	"bytes"
+	"encoding/hex"
 	"fmt"
 	"math/big"
 	"sort"
@@ -334,6 +335,7 @@ func (self *StateDB) GetState(addr common.Address, key []byte) []byte {
 	defer self.lock.Unlock()
 	stateObject := self.getStateObject(addr)
 	keyTrie, _, _ := getKeyValue(addr, key, nil)
+	fmt.Println("bd block 调试:  GetState", "keyTrie", keyTrie, "hexKeyTrie",  hex.EncodeToString([]byte(keyTrie)), "key", key)
 	if stateObject != nil {
 		return stateObject.GetState(self.db, keyTrie)
 	}
