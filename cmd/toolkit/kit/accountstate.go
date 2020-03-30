@@ -64,6 +64,9 @@ func accountState(c *cli.Context) error {
 	//defeRootHash := make(map[string][]string, 0)
 
 
+	addrs :=  make(map[string]struct{}, 0)
+
+
 	iter := tr.NodeIterator(nil)
 	for iter.Next(true) {
 		if iter.Leaf() {
@@ -75,6 +78,8 @@ func accountState(c *cli.Context) error {
 
 			if hex.EncodeToString(obj.CodeHash) != emptyHashStr && "737e0f5e7391bac57b4213527b5a343f732279df47448657afac9980719ae28f" != hex.EncodeToString(obj.CodeHash) {
 				value := iter.LeafKey()
+
+				addrs[hex.EncodeToString(value)] = struct{}{}
 				fmt.Println("accountAddr Hash:",/* common.BytesToHash(value).String(),*/ hex.EncodeToString(value), "nonce:", obj.Nonce, "codehash", hex.EncodeToString(obj.CodeHash))
 				contractAccountCount++
 
@@ -91,6 +96,7 @@ func accountState(c *cli.Context) error {
 				if _, ok := rootHash[crh]; !ok {
 					rootHash[crh] = struct{}{}
 				}
+
 
 
 				//if r, ok := rootHash[codeHash]; !ok {
@@ -121,11 +127,15 @@ func accountState(c *cli.Context) error {
 		fmt.Println(k, v)
 	}
 
+	for addrHash, _ := range addrs {
+		fmt.Println("addrHash: ", addrHash)
+	}
+
 	//for k, _ := range rootHash {
 	//	fmt.Println(k)
 	//}
 
-	fmt.Println("rootHash", len(rootHash))
+	//fmt.Println("rootHash", len(rootHash))
 
 	return nil
 }
