@@ -3,6 +3,8 @@ package kit
 import (
 	"encoding/hex"
 	"fmt"
+	"time"
+
 	"github.com/PlatONnetwork/PlatON-Go/common"
 	"github.com/PlatONnetwork/PlatON-Go/core/rawdb"
 	"github.com/PlatONnetwork/PlatON-Go/core/state"
@@ -10,7 +12,6 @@ import (
 	"github.com/PlatONnetwork/PlatON-Go/rlp"
 	"github.com/PlatONnetwork/PlatON-Go/trie"
 	"gopkg.in/urfave/cli.v1"
-	"time"
 )
 
 var (
@@ -48,7 +49,6 @@ func accountState(c *cli.Context) error {
 	emptyCodeHash := crypto.Keccak256(nil)
 	fmt.Println("accountstate emptyHashStr", hex.EncodeToString(emptyCodeHash), "\naccountstate emptyHashHex", common.BytesToHash(emptyCodeHash).Hex())
 
-
 	emptyHashStr := hex.EncodeToString(emptyCodeHash)
 
 	totalAccountCount := 0
@@ -56,16 +56,13 @@ func accountState(c *cli.Context) error {
 
 	start := time.Now()
 
-
 	stats := make(map[string]int, 0)
 
 	rootHash := make(map[string]struct{}, 0)
 	//
 	//defeRootHash := make(map[string][]string, 0)
 
-
-	addrs :=  make(map[string]struct{}, 0)
-
+	addrs := make(map[string]struct{}, 0)
 
 	iter := tr.NodeIterator(nil)
 	for iter.Next(true) {
@@ -76,11 +73,17 @@ func accountState(c *cli.Context) error {
 				return fmt.Errorf("parse account error:%s", err.Error())
 			}
 
+			value := iter.LeafKey()
+
+			if hex.EncodeToString(value) == "58d8f9573a5de846df5ff34e9cde4c72aa7ed926cc9ea02edc15b2d787ea9576" {
+				fmt.Println("发现 ", "0x32BEc384344C2DC1eA794a4e149c1b74dD8467Ef", hex.EncodeToString(value), "codeHash", hex.EncodeToString(obj.CodeHash))
+			}
+
 			if hex.EncodeToString(obj.CodeHash) != emptyHashStr && "737e0f5e7391bac57b4213527b5a343f732279df47448657afac9980719ae28f" != hex.EncodeToString(obj.CodeHash) {
 				value := iter.LeafKey()
 
 				addrs[hex.EncodeToString(value)] = struct{}{}
-				fmt.Println("accountAddr Hash:",/* common.BytesToHash(value).String(),*/ hex.EncodeToString(value), "nonce:", obj.Nonce, "codehash", hex.EncodeToString(obj.CodeHash))
+				fmt.Println("accountAddr Hash:" /* common.BytesToHash(value).String(),*/, hex.EncodeToString(value), "nonce:", obj.Nonce, "codehash", hex.EncodeToString(obj.CodeHash))
 				contractAccountCount++
 
 				codeHash := hex.EncodeToString(obj.CodeHash)
@@ -91,13 +94,11 @@ func accountState(c *cli.Context) error {
 					stats[codeHash] = 1
 				}
 
-				crh := codeHash+"_" + obj.Root.Hex()
+				crh := codeHash + "_" + obj.Root.Hex()
 
 				if _, ok := rootHash[crh]; !ok {
 					rootHash[crh] = struct{}{}
 				}
-
-
 
 				//if r, ok := rootHash[codeHash]; !ok {
 				//	rootHash[codeHash] = obj.Root.Hex()
