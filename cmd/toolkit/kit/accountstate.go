@@ -73,7 +73,7 @@ func accountState(c *cli.Context) error {
 				return fmt.Errorf("parse account error:%s", err.Error())
 			}
 
-			if hex.EncodeToString(obj.CodeHash) != emptyHashStr /*&& "737e0f5e7391bac57b4213527b5a343f732279df47448657afac9980719ae28f" != hex.EncodeToString(obj.CodeHash)*/ {
+			if hex.EncodeToString(obj.CodeHash) != emptyHashStr && "737e0f5e7391bac57b4213527b5a343f732279df47448657afac9980719ae28f" != hex.EncodeToString(obj.CodeHash) {
 				value := iter.LeafKey()
 				fmt.Println("accountAddr Hash:",/* common.BytesToHash(value).String(),*/ hex.EncodeToString(value), "nonce:", obj.Nonce, "codehash", hex.EncodeToString(obj.CodeHash))
 				contractAccountCount++
