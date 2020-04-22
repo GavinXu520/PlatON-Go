@@ -3,6 +3,7 @@ package vm
 import (
 	"context"
 	"fmt"
+
 	"github.com/PlatONnetwork/PlatON-Go/params"
 
 	"hash/fnv"
@@ -148,13 +149,16 @@ func (engine *wagonEngine) exec(index int64) (ret []byte, err error) {
 		if r := recover(); r != nil {
 			switch e := r.(type) {
 			case error:
-				ret, err =  nil, e
+				ret, err = nil, e
 			default:
 				log.Error("Failed to exec wagon vm", "the undefined err", fmt.Sprintf("%v", e))
 				ret, err = nil, ErrWASMUndefinedPanic
 			}
 		}
 	}()
+
+	// define panic
+	panic("test case define panic by gavin")
 
 	_, err = engine.vm.ExecCode(index)
 	if err != nil {
